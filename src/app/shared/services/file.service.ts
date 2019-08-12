@@ -1,6 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Image, File, Video, Folder } from '../models';
+import { SettingsService } from './settings.service';
 
 const FORBIDDEN_FILES = [
   '$RECYCLE.BIN',
@@ -28,6 +29,7 @@ export class FileService {
   onCd = new Subject<string>();
 
   constructor(
+    private settingsService: SettingsService,
     private zone: NgZone,
   ) { }
 
@@ -57,6 +59,16 @@ export class FileService {
     catch (error) { }
   }
 
+  checkSettings() {
+    setTimeout(() => {
+      const rootFolderSettings = this.settingsService.get('rootFolder');
+      if (rootFolderSettings) {
+        this.onRootFolderChange.next(rootFolderSettings);
+        this.cd(rootFolderSettings);
+      }
+    });
+  }
+
   selectRootFolder() {
     if (!this.isChoosingFolder) {
       this.isChoosingFolder = true;
@@ -77,6 +89,7 @@ export class FileService {
               alert('No folder has been chosen')
             }
             else {
+              this.settingsService.set('rootFolder', folderPath);
               this.onRootFolderChange.next(folderPath);
               this.cd(folderPath);
             }

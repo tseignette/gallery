@@ -30,6 +30,8 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.fileService.checkSettings();
+
     this.currentFolderSub = this.fileService.onCd.subscribe(
       (currentFolderAbsolute: string) => {
         const currentFolderRelative = currentFolderAbsolute.substr(this.rootFolder.length + 1);

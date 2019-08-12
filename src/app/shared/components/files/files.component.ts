@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Input, OnChanges } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { FileService } from '../../services';
+import { FileService, SettingsService } from '../../services';
 
 @Component({
   selector: 'app-files',
@@ -21,6 +21,7 @@ export class FilesComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(
     private fileService: FileService,
+    private settingsService: SettingsService,
   ) { }
 
   ngOnInit() {
@@ -28,6 +29,7 @@ export class FilesComponent implements OnInit, OnChanges, OnDestroy {
       this.folderPath = folderPath;
       this.updateFiles();
 
+      this.showSection = this.settingsService.get('showSection');
       if (!this.showSection) {
         this.showSection = {};
 
@@ -64,6 +66,10 @@ export class FilesComponent implements OnInit, OnChanges, OnDestroy {
         this.files = this.fileService.ls(this.folderPath);
         break;
     }
+  }
+
+  onShowSectionChange() {
+    this.settingsService.set('showSection', this.showSection);
   }
 
 }

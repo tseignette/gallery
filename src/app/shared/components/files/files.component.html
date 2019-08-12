@@ -1,6 +1,12 @@
 <div>
   <div *ngFor="let type of files | ngForObject">
-    <input type="checkbox" [id]="type" [name]="type" [(ngModel)]="showSection[type]">
+    <input
+      type="checkbox"
+      [id]="type"
+      [name]="type"
+      [(ngModel)]="showSection[type]"
+      (change)="onShowSectionChange()"
+    >
     <label [for]="type">{{ type }}</label>
   </div>
 </div>

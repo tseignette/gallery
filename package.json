@@ -86,6 +86,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.10.1",
     "bootstrap": "^4.3.1",
+    "electron-app-settings": "^1.0.2",
     "exif": "^0.6.0",
     "jquery": "^3.4.1",
     "popper.js": "^1.15.0"
