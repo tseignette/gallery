@@ -30,10 +30,14 @@
 >
   <div
     *ngFor="let item of items; let i = index"
-    class="app-section__videos__video col-6 col-xl-4"
+    class="col-3"
   >
-    <video [src]="'file://' + item.path" controls disablePictureInPicture></video>
-    <p>{{ item.name }}</p>
+    <div class="app-section__videos__video">
+      <video [src]="'file://' + item.path" (click)="openFullscreen(i)"></video>
+      <div class="app-section__info">
+        <p class="app-section__info__name">{{ item.name }}</p>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -47,9 +51,9 @@
     class="app-section__images__image"
   >
     <img [src]="'file://' + item.path" [alt]="item.name">
-    <div class="app-section__images__image__info">
-      <p class="app-section__images__image__info__name">{{ item.name }}</p>
-      <p class="app-section__images__image__info__date">{{ item.date | date:'medium' }}</p>
+    <div class="app-section__info">
+      <p class="app-section__info__name">{{ item.name }}</p>
+      <p class="app-section__info__date">{{ item.date | date:'medium' }}</p>
     </div>
   </div>
 </div>
@@ -59,20 +63,29 @@
   class="app-section__fullscreen"
 >
   <i
+    (click)="closeFullscreen()"
+    class="app-section__fullscreen__close fas fa-times"
+  ></i>
+  <i
     (click)="fullscreenPrevious()"
     [ngClass]="{ disabled: fullscreen === 0 }"
-    class="fas fa-caret-left"
+    class="app-section__fullscreen__navigation fas fa-caret-left"
   ></i>
   <div class="app-section__fullscreen__container">
+    <video
+      *ngIf="type === 'videos'"
+      [src]="'file://' + items[fullscreen].path"
+      controls disablePictureInPicture
+    ></video>
     <img
+      *ngIf="type === 'images'"
       [src]="'file://' + items[fullscreen].path"
       [alt]="items[fullscreen].name"
-      (click)="closeFullscreen()"
     >
   </div>
   <i
     (click)="fullscreenNext()"
     [ngClass]="{ disabled: fullscreen === items.length - 1 }"
-    class="fas fa-caret-right"
+    class="app-section__fullscreen__navigation fas fa-caret-right"
   ></i>
 </div>
