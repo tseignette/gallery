@@ -40,6 +40,12 @@ export class FileService {
     this.cd(rootFolder);
   }
 
+  private setFileDate(file: File) {
+    fs.stat(file.path, (error, stats) => {
+      if (!error) file.date = stats.birthtime;
+    });
+  }
+
   private setImageDate(image: Image) {
     try {
       new ExifImage(
@@ -61,14 +67,12 @@ export class FileService {
             });
           }
           else {
-            console.log(error);
+            this.setFileDate(image);
           }
         }
       );
     }
-    catch (error) {
-      console.log(error);
-    }
+    catch (error) { }
   }
 
   checkSettings() {
@@ -141,13 +145,19 @@ export class FileService {
         images.push(image);
       }
       else if (Folder.isFolder(folderPath, file)) {
-        folders.push(new Folder(folderPath, file));
+        const folder = new Folder(folderPath, file);
+        this.setFileDate(folder);
+        folders.push(folder);
       }
       else if (Video.isVideo(file)) {
-        videos.push(new Video(folderPath, file));
+        const video = new Video(folderPath, file);
+        this.setFileDate(video);
+        videos.push(video);
       }
       else {
-        files.push(new File(folderPath, file));
+        const newFile = new File(folderPath, file);
+        this.setFileDate(newFile);
+        files.push(newFile);
       }
     });
 

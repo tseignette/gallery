@@ -2,6 +2,8 @@ var path = require('path');
 
 export class File {
 
+  date: Date;
+
   path: string;
 
   constructor(

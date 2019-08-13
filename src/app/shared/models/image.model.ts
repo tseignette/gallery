@@ -9,8 +9,6 @@ const ALLOWED_IMAGES = [
 
 export class Image extends File {
 
-  date: Date;
-
   thumbnail: string;
 
   constructor(

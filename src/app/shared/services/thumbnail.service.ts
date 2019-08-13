@@ -60,17 +60,13 @@ export class ThumbnailService {
             mkdirp(thumbnailFolder, (error) => {
               if (error) {
                 this.incrementDoneThumbnails();
-                console.log(error);
                 return;
               }
 
               fs.writeFile(thumbnailPath, buffer, (error) => {
                 this.incrementDoneThumbnails();
 
-                if (error) {
-                  console.log(error);
-                }
-                else {
+                if (!error) {
                   callback();
                 }
               });
@@ -80,7 +76,6 @@ export class ThumbnailService {
       )
       .catch(err => {
         this.incrementDoneThumbnails();
-        console.log(err);
       });
   }
 
