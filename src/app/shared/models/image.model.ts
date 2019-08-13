@@ -5,12 +5,13 @@ const ALLOWED_IMAGES = [
   'jpg',
   'jpeg',
   'gif',
-  'svg',
 ];
 
 export class Image extends File {
 
   date: Date;
+
+  thumbnail: string;
 
   constructor(
     folder,

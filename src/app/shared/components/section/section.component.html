@@ -50,7 +50,8 @@
     (click)="openFullscreen(i)"
     class="app-section__images__image"
   >
-    <img [src]="'file://' + item.path" [alt]="item.name">
+    <img *ngIf="item.thumbnail" [src]="'file://' + item.thumbnail" [alt]="item.name">
+    <i *ngIf="!item.thumbnail" class="fas fa-cog fa-spin"></i>
     <div class="app-section__info">
       <p class="app-section__info__name">{{ item.name }}</p>
       <p class="app-section__info__date">{{ item.date | date:'medium' }}</p>

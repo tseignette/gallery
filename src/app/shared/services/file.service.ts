@@ -1,11 +1,15 @@
 import { Injectable, NgZone } from '@angular/core';
+import { ExifImage } from 'exif';
 import { Subject } from 'rxjs';
 import { Image, File, Video, Folder } from '../models';
 import { SettingsService } from './settings.service';
+import { ThumbnailService, THUMBNAIL_FOLDER } from './thumbnail.service';
+import * as fs from 'fs';
 
 const FORBIDDEN_FILES = [
   '$RECYCLE.BIN',
   'Thumbs.db',
+  THUMBNAIL_FOLDER,
 ];
 
 @Injectable({
@@ -14,10 +18,6 @@ const FORBIDDEN_FILES = [
 export class FileService {
 
   private dialog = require('electron').remote.dialog;
-
-  private ExifImage = require('exif').ExifImage;
-
-  private fs = require('fs');
 
   /**
    * Prevent opening several folder select windows
@@ -30,13 +30,20 @@ export class FileService {
 
   constructor(
     private settingsService: SettingsService,
+    private thumbnailService: ThumbnailService,
     private zone: NgZone,
   ) { }
 
-  private getImageDate(path: string, callback: (Date) => void) {
+  private setRootFolder(rootFolder: string) {
+    this.thumbnailService.setThumbnailFolder(rootFolder);
+    this.onRootFolderChange.next(rootFolder);
+    this.cd(rootFolder);
+  }
+
+  private setImageDate(image: Image) {
     try {
-      new this.ExifImage(
-        { image : path },
+      new ExifImage(
+        { image : image.path },
         (error, exifData) => {
           if (!error) {
             const stringDate = exifData.exif.DateTimeOriginal;
@@ -50,21 +57,25 @@ export class FileService {
             ) : undefined;
 
             this.zone.run(() => {
-              callback(date);
+              image.date = date;
             });
+          }
+          else {
+            console.log(error);
           }
         }
       );
     }
-    catch (error) { }
+    catch (error) {
+      console.log(error);
+    }
   }
 
   checkSettings() {
     setTimeout(() => {
       const rootFolderSettings = this.settingsService.get('rootFolder');
       if (rootFolderSettings) {
-        this.onRootFolderChange.next(rootFolderSettings);
-        this.cd(rootFolderSettings);
+        this.setRootFolder(rootFolderSettings);
       }
     });
   }
@@ -81,17 +92,16 @@ export class FileService {
         (folderPaths: string[]) => {
           const folderPath = folderPaths && folderPaths.length ?
             folderPaths[0] : undefined
-  
+
           this.zone.run(() => {
             this.isChoosingFolder = false;
-  
+
             if (!folderPath) {
               alert('No folder has been chosen')
             }
             else {
               this.settingsService.set('rootFolder', folderPath);
-              this.onRootFolderChange.next(folderPath);
-              this.cd(folderPath);
+              this.setRootFolder(folderPath);
             }
           });
         },
@@ -114,7 +124,7 @@ export class FileService {
     videos: Video[],
   } {
     // Remove hidden and forbidden files
-    const filteredFiles = this.fs.readdirSync(folderPath).filter((file: string) => {
+    const filteredFiles = fs.readdirSync(folderPath).filter((file: string) => {
       return file[0] !== '.' && FORBIDDEN_FILES.indexOf(file) === -1;
     });
 
@@ -126,12 +136,8 @@ export class FileService {
     filteredFiles.forEach(file => {
       if (Image.isImage(file)) {
         const image = new Image(folderPath, file);
-        this.getImageDate(
-          image.path,
-          (date: Date) => {
-            image.date = date;
-          }
-        );
+        this.thumbnailService.setImageThumbnail(image);
+        this.setImageDate(image);
         images.push(image);
       }
       else if (Folder.isFolder(folderPath, file)) {
