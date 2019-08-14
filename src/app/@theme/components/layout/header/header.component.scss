@@ -1,0 +1,15 @@
+@import 'variables';
+
+:host {
+  margin: $gutterS;
+  margin-bottom: 0;
+
+  border-bottom: $borderS;
+
+  .app-header {
+    &__content {
+      padding: $gutter;
+      padding-bottom: $gutterS;
+    }
+  }
+}

@@ -1,0 +1,10 @@
+@import 'variables';
+
+:host {
+  width: 18.0rem;
+
+  padding: $gutter;
+
+  border-right: $border;
+  background-color: $grayXXS;
+}
