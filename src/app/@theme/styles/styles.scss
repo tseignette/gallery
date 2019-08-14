@@ -1,1 +1,23 @@
-/* You can add global styles to this file, and also import other style files */
+@import 'variables';
+
+* {
+  font-family: $fonts;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+  font-size: $fontSizeRoot;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+div {
+  box-sizing: border-box;
+  font-size: $textSize;
+}
