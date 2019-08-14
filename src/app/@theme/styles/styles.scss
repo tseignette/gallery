@@ -21,3 +21,7 @@ div {
   box-sizing: border-box;
   font-size: $textSize;
 }
+
+[hidden] {
+  display: none !important;
+}

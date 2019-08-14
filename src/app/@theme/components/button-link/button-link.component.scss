@@ -1,0 +1,7 @@
+@import 'variables';
+
+:host {
+  color: $blue;
+  user-select: none;
+  font-weight: $fontWeightL;
+}

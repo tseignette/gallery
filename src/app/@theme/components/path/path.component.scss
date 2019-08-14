@@ -1,0 +1,47 @@
+@import 'variables';
+
+:host {
+  display: flex;
+  flex-wrap: wrap;
+
+  .app-path {
+    &__folder {
+      display: flex;
+      align-items: center;
+
+      &::before {
+        @extend %font-awesome;
+
+        margin-right: $gutterS;
+
+        font-size: 1.6rem;
+      }
+
+      &:first-child {
+        &::before {
+          content: '\f1c0';
+        }
+      }
+
+      &:not(:first-child) {
+        &::before {
+          content: '\f07b';
+
+          color: $blueS;
+        }
+      }
+
+      &:not(:last-child) {
+        &::after {
+          @extend %font-awesome;
+
+          content: '\f054';
+
+          margin: 0 $gutter;
+
+          font-size: 0.8rem;
+        }
+      }
+    }
+  }
+}

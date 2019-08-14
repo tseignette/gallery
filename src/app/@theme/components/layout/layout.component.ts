@@ -1,12 +1,38 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { GalleryService } from '../../../@core/services';
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss']
 })
-export class LayoutComponent {
+export class LayoutComponent implements OnInit, OnDestroy {
 
-  constructor() { }
+  private galleryUpdateSub: Subscription;
+
+  isGalleryFolderChosen: boolean;
+
+  constructor(
+    private galleryService: GalleryService,
+  ) { }
+
+  ngOnInit() {
+    this.galleryUpdateSub = this.galleryService.onGalleryUpdate.subscribe(
+      (galleryFolder) => {
+        this.isGalleryFolderChosen = !!galleryFolder;
+      }
+    );
+  }
+
+  ngOnDestroy() {
+    if (this.galleryUpdateSub) {
+      this.galleryUpdateSub.unsubscribe();
+    }
+  }
+
+  selectGallery() {
+    this.galleryService.selectGallery();
+  }
 
 }

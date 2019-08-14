@@ -10,6 +10,20 @@
     &__content {
       padding: $gutter;
       padding-bottom: $gutterS;
+
+      &__row {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      &__current-folder-path {
+        flex: 1;
+      }
+
+      &__current-folder-name {
+        font-size: $titleSize;
+        font-weight: $fontWeightXL;
+      }
     }
   }
 }
