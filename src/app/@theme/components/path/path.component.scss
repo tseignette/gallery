@@ -1,13 +1,21 @@
 @import 'variables';
 
 :host {
+  $pathGutter: $gutterXS;
+
   display: flex;
   flex-wrap: wrap;
+
+  margin: -$pathGutter 0;
+
+  user-select: none;
 
   .app-path {
     &__folder {
       display: flex;
       align-items: center;
+
+      margin: $pathGutter 0;
 
       &::before {
         @extend %font-awesome;

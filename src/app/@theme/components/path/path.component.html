@@ -1,1 +1,7 @@
-<div class="app-path__folder" *ngFor="let folder of path">{{ folder }}</div>
+<div
+  class="app-path__folder"
+  *ngFor="let folder of path; let i = index"
+  (click)="cd(i)"
+>
+  {{ folder }}
+</div>

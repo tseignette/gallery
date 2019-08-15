@@ -43,4 +43,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
+  cd(folder: Folder) {
+    this.galleryService.cd(folder);
+  }
+
 }

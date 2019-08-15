@@ -8,6 +8,8 @@ import { Folder } from '../models';
 })
 export class GalleryService {
 
+  private currentFolder: Folder;
+
   /**
    * Prevent opening several folder select windows
    */
@@ -22,7 +24,16 @@ export class GalleryService {
   ) { }
 
   cd(folder: Folder) {
-    this.onCurrentFolderUpdate.next(folder);
+    // Remove useless '/' if there is one
+    if (folder.path.slice(-1) === '/') {
+      folder = new Folder(folder.path.slice(0, -1));
+    }
+
+    // Navigate only if current folder isn't defined or if it's different than next folder
+    if (!this.currentFolder || folder.path !== this.currentFolder.path) {
+      this.currentFolder = folder;
+      this.onCurrentFolderUpdate.next(folder);
+    }
   }
 
   selectGallery() {
