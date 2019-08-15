@@ -1,0 +1,41 @@
+@import 'variables';
+
+:host {
+  .app-folder {
+    &__preview {
+      position: relative;
+
+      border-radius: $radius;
+      background-color: $grayS;
+
+      &::after {
+        content: '';
+
+        display: block;
+
+        padding-bottom: 100%;
+      }
+
+      &__placeholder {
+        position: absolute;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 100%;
+        height: 100%;
+
+        color: $grayL;
+        font-size: 4.0rem;
+      }
+    }
+
+    &__name {
+      margin-top: $gutterS;
+
+      text-align: center;
+      font-weight: $fontWeightL;
+    }
+  }
+}

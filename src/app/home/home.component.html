@@ -1,7 +1,17 @@
-<div class="app-home__folders" *ngIf="fileList && fileList.nbFolders">
-  <div *ngFor="let folder of fileList.folders">{{ folder.name }}</div>
+<div
+  *ngIf="fileList && fileList.nbFolders"
+  class="app-home__folders row mx-n2"
+>
+  <app-folder
+    *ngFor="let folder of fileList.folders"
+    class="col-2 px-2"
+    [folder]="folder"
+  ></app-folder>
 </div>
 
-<div class="app-home__medias" *ngIf="fileList && fileList.nbMedias">
+<div
+  *ngIf="fileList && fileList.nbMedias"
+  class="app-home__medias"
+>
   <div *ngFor="let media of fileList.medias">{{ media.name }}</div>
 </div>
