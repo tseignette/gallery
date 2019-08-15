@@ -1,1 +1,7 @@
-<div>Welcome to angular-boilerplate!</div>
+<div class="app-home__folders" *ngIf="fileList && fileList.nbFolders">
+  <div *ngFor="let folder of fileList.folders">{{ folder.name }}</div>
+</div>
+
+<div class="app-home__medias" *ngIf="fileList && fileList.nbMedias">
+  <div *ngFor="let media of fileList.medias">{{ media.name }}</div>
+</div>

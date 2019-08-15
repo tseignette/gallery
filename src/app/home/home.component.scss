@@ -1,5 +1,7 @@
-:host {
-  div {
-    text-align: center;
+@import 'variables';
+
+.app-home {
+  &__folders ~ &__medias {
+    margin-top: $gutterXXL;
   }
 }
