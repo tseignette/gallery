@@ -1,7 +1,8 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { GalleryService, FileService, FilterService } from './services';
+import { GalleryService, FileService, FilterService, ThumbnailService, ProgressService } from './services';
+import { ImageFactory } from './models';
 
 const BASE_MODULES = [
   CommonModule,
@@ -12,6 +13,9 @@ const PROVIDERS = [
   FileService,
   FilterService,
   GalleryService,
+  ImageFactory,
+  ProgressService,
+  ThumbnailService,
 ];
 
 @NgModule({

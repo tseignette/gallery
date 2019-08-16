@@ -58,3 +58,14 @@ $radius: 0.3rem;
 $borderS: 0.1rem solid $grayXS;
 $border: 0.1rem solid $gray;
 $transition: all .2s ease;
+
+%background-loader {
+  background: linear-gradient(to right, $grayS 8%, $grayL 18%, $grayS 33%);
+  background-size: 100vw 100%;
+
+  animation-duration: 1.5s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: placeHolderShimmer;
+  animation-timing-function: linear;
+}

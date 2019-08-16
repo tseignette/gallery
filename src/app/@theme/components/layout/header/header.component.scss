@@ -37,8 +37,7 @@
 
         &__filter {
           display: flex;
-
-          height: 0%;
+          align-items: center;
 
           &:not(:last-child) {
             margin-right: $gutter;

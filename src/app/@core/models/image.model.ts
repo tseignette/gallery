@@ -15,8 +15,6 @@ export class Image extends File {
     super(path);
 
     this.type = 'image';
-
-    this.thumbnail = path; // TODO: implement thumbnails
   }
 
   static isImage(filePath: string) {

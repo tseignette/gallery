@@ -2,6 +2,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { Subject } from 'rxjs';
 import { remote } from 'electron';
 import { Folder } from '../models';
+import { ThumbnailService } from './thumbnail.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,7 @@ export class GalleryService {
   onGalleryUpdate = new Subject<Folder>();
 
   constructor(
+    private thumbnailService: ThumbnailService,
     private zone: NgZone,
   ) { }
 
@@ -60,6 +62,7 @@ export class GalleryService {
         else {
           this.zone.run(() => {
             const folder = new Folder(galleryPath);
+            this.thumbnailService.setGallery(folder);
             this.onGalleryUpdate.next(folder);
             this.cd(folder);
           });

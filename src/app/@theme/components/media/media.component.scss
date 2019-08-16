@@ -18,12 +18,16 @@
       width: 100%;
       height: 100%;
 
-      & > img, & > video {
+      &__loader, & > img, & > video {
         width: 100%;
         height: 100%;
 
         object-fit: contain;
         word-break: break-all;
+      }
+
+      &__loader {
+        @extend %background-loader;
       }
 
       &__video-duration {

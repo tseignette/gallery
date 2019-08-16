@@ -1,6 +1,15 @@
 <div class="app-media">
   <div class="app-media__thumbnail">
-    <img *ngIf="media.type === 'image'" [src]="'file://' + media.thumbnail" [alt]="media.name">
+    <div
+      *ngIf="media.type === 'image' && !media.thumbnail"
+      class="app-media__thumbnail__loader"
+    ></div>
+
+    <img
+      *ngIf="media.type === 'image' && media.thumbnail"
+      [src]="'file://' + media.thumbnail"
+      [alt]="media.name"
+    >
 
     <video
       #video
