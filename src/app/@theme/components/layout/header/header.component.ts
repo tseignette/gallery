@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { GalleryService } from '../../../../@core/services';
+import { GalleryService, FileService, FilterService } from '../../../../@core/services';
 import { Subscription } from 'rxjs';
-import { Folder } from '../../../../@core/models';
+import { Folder, Filters } from '../../../../@core/models';
 
 @Component({
   selector: 'app-header',
@@ -12,13 +12,27 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private currentFolderUpdateSub: Subscription;
 
+  private fileListSub: Subscription;
+
   private galleryUpdateSub: Subscription;
 
+  FILTERS_TEXT = {
+    folder: 'folders',
+    image: 'pictures',
+    video: 'videos',
+  };
+
   currentFolder: Folder;
+
+  fileList: Folder;
+
+  filters: Filters;
 
   galleryFolder: Folder;
 
   constructor(
+    private fileService: FileService,
+    private filterService: FilterService,
     private galleryService: GalleryService,
   ) { }
 
@@ -29,16 +43,27 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }
     );
 
+    this.fileListSub = this.fileService.onFileList.subscribe((fileList) => {
+      this.fileList = fileList;
+    });
+
     this.galleryUpdateSub = this.galleryService.onGalleryUpdate.subscribe(
       (galleryFolder) => {
         this.galleryFolder = galleryFolder;
       }
     );
+
+    this.filters = new Filters();
+    this.onFilterUpdate();
   }
 
   ngOnDestroy() {
     if (this.currentFolderUpdateSub) {
       this.currentFolderUpdateSub.unsubscribe();
+    }
+
+    if (this.fileListSub) {
+      this.fileListSub.unsubscribe();
     }
 
     if (this.galleryUpdateSub) {
@@ -48,6 +73,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   selectGallery() {
     this.galleryService.selectGallery();
+  }
+
+  onFilterUpdate() {
+    this.filterService.setFilters(this.filters);
   }
 
 }

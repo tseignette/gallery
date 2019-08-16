@@ -25,3 +25,7 @@ div {
 [hidden] {
   display: none !important;
 }
+
+input[type=checkbox] {
+  margin: 0;
+}

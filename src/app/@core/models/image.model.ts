@@ -14,6 +14,8 @@ export class Image extends File {
   constructor(path: string) {
     super(path);
 
+    this.type = 'image';
+
     this.thumbnail = path; // TODO: implement thumbnails
   }
 

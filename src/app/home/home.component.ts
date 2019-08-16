@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FileService, GalleryService } from '../@core/services';
+import { FileService, GalleryService, FilterService } from '../@core/services';
 import { Subscription } from 'rxjs';
-import { Folder } from '../@core/models';
+import { Folder, Filters } from '../@core/models';
 
 @Component({
   selector: 'app-home',
@@ -14,10 +14,15 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private onFileListSub: Subscription;
 
+  private onFilterSub: Subscription;
+
   fileList: Folder;
+
+  filters: Filters;
 
   constructor(
     private fileService: FileService,
+    private filterService: FilterService,
     private galleryService: GalleryService,
   ) { }
 
@@ -31,6 +36,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.onFileListSub = this.fileService.onFileList.subscribe((fileList) => {
       this.fileList = fileList;
     });
+
+    this.onFilterSub = this.filterService.onFiltersUpdate.subscribe((filters) => {
+      this.filters = filters;
+    });
+
+    this.filterService.getFilters();
   }
 
   ngOnDestroy() {
@@ -40,6 +51,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     if (this.onFileListSub) {
       this.onFileListSub.unsubscribe();
+    }
+
+    if (this.onFilterSub) {
+      this.onFilterSub.unsubscribe();
     }
   }
 

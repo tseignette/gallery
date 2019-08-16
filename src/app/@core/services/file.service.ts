@@ -1,7 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
-import { Folder } from '../models';
-import { Image } from '../models/image.model';
-import { Video } from '../models/video.model';
+import { Folder, Image, Video } from '../models';
 import * as fs from 'fs';
 import { Subject } from 'rxjs';
 

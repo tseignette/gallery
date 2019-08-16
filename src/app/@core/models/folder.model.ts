@@ -19,6 +19,8 @@ export class Folder extends File {
 
   constructor(path: string) {
     super(path);
+
+    this.type = 'folder';
   }
 
   static isFolder(filePath: string) {

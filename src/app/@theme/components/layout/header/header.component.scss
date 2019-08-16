@@ -21,8 +21,38 @@
       }
 
       &__current-folder-name {
+        margin-bottom: $gutter;
+
         font-size: $titleSize;
         font-weight: $fontWeightXL;
+      }
+
+      &__info {
+        color: $grayXL;
+        font-size: $textSizeS;
+      }
+
+      &__filters {
+        display: flex;
+
+        &__filter {
+          display: flex;
+
+          height: 0%;
+
+          &:not(:last-child) {
+            margin-right: $gutter;
+          }
+
+          & > input[type=checkbox] {
+            margin-right: $gutterS;
+          }
+
+          & > label {
+            user-select: none;
+            font-size: $textSizeS;
+          }
+        }
       }
     }
   }

@@ -12,4 +12,28 @@
     {{ currentFolder?.name }}
   </div>
 
+  <div class="app-header__content__row">
+    <div class="app-header__content__info">
+      {{ fileList?.nbFolders }} folders •
+      {{ fileList?.nbImages }} pictures •
+      {{ fileList?.nbVideos }} videos
+    </div>
+
+    <div class="app-header__content__filters">
+      <div
+        *ngFor="let type of filters.show | ngForObject"
+        class="app-header__content__filters__filter"
+      >
+        <input
+          type="checkbox"
+          [id]="type"
+          [name]="type"
+          [(ngModel)]="filters.show[type]"
+          (change)="onFilterUpdate()"
+        >
+        <label [for]="type">{{ FILTERS_TEXT[type] }}</label>
+      </div>
+    </div>
+  </div>
+
 </div>

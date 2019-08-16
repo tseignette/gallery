@@ -1,6 +1,5 @@
 import { Component, Input, OnChanges, ViewChild, ElementRef } from '@angular/core';
-import { Image } from '../../../@core/models/image.model';
-import { Video } from '../../../@core/models/video.model';
+import { Image, Video } from '../../../@core/models';
 
 @Component({
   selector: 'app-media',
@@ -15,23 +14,19 @@ export class MediaComponent implements OnChanges {
 
   duration: string;
 
-  type: string;
-
   constructor() { }
 
   ngOnChanges() {
     if (!this.media) return;
 
-    this.type = this.media.constructor.name.toLowerCase();
-
-    if (this.type === 'video') this.initVideo();
+    if (this.media.type === 'video') this.initVideo();
   }
 
   private initVideo() {
     // Wait for video metadata to be ready
     let interval = setInterval(() => {
       // Metadata is available at readyState 1
-      if (this.video.nativeElement.readyState === 0) return;
+      if (!this.video || this.video.nativeElement.readyState === 0) return;
 
       // Stopping interval
       clearInterval(interval);

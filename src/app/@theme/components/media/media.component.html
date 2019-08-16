@@ -1,15 +1,15 @@
 <div class="app-media">
   <div class="app-media__thumbnail">
-    <img *ngIf="type === 'image'" [src]="'file://' + media.thumbnail" [alt]="media.name">
+    <img *ngIf="media.type === 'image'" [src]="'file://' + media.thumbnail" [alt]="media.name">
 
     <video
       #video
-      *ngIf="type === 'video'"
+      *ngIf="media.type === 'video'"
       [src]="'file://' + media.path"
       (mouseenter)="play()"
       (mouseleave)="pause()"
     ></video>
-    <div *ngIf="type === 'video'" class="app-media__thumbnail__video-duration">
+    <div *ngIf="media.type === 'video'" class="app-media__thumbnail__video-duration">
       {{ duration }}
     </div>
   </div>

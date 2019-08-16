@@ -8,6 +8,8 @@ export class File {
 
   path: string;
 
+  type = 'file';
+
   constructor(path: string) {
     const split = path.split('/');
 

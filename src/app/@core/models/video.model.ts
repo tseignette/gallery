@@ -8,6 +8,8 @@ export class Video extends File {
 
   constructor(path: string) {
     super(path);
+
+    this.type = 'video';
   }
 
   static isVideo(filePath: string) {
