@@ -1,6 +1,6 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NotFoundComponent, LayoutComponent, AsideComponent, HeaderComponent, ButtonLinkComponent, PathComponent, FolderComponent } from './components';
+import { NotFoundComponent, LayoutComponent, AsideComponent, HeaderComponent, ButtonLinkComponent, PathComponent, FolderComponent, MediaComponent } from './components';
 import { NgForObjectPipe } from './pipes';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -10,6 +10,7 @@ const COMPONENTS = [
   FolderComponent,
   HeaderComponent,
   LayoutComponent,
+  MediaComponent,
   NotFoundComponent,
   PathComponent,
 ];

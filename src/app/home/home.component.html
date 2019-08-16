@@ -1,10 +1,10 @@
 <div
   *ngIf="fileList && fileList.nbFolders"
-  class="app-home__folders row mx-n2"
+  class="app-home__folders row"
 >
   <app-folder
     *ngFor="let folder of fileList.folders"
-    class="col-2 px-2"
+    class="app-home__file col-1"
     [folder]="folder"
     (click)="cd(folder)"
   ></app-folder>
@@ -12,7 +12,11 @@
 
 <div
   *ngIf="fileList && fileList.nbMedias"
-  class="app-home__medias"
+  class="app-home__medias row"
 >
-  <div *ngFor="let media of fileList.medias">{{ media.name }}</div>
+  <app-media
+    *ngFor="let media of fileList.medias"
+    class="app-home__file col-2"
+    [media]="media"
+  ></app-media>
 </div>

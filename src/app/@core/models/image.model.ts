@@ -9,8 +9,12 @@ export const ALLOWED_IMAGES = [
 
 export class Image extends File {
 
+  thumbnail: string;
+
   constructor(path: string) {
     super(path);
+
+    this.thumbnail = path; // TODO: implement thumbnails
   }
 
   static isImage(filePath: string) {

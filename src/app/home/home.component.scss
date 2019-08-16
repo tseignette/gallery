@@ -2,6 +2,15 @@
 
 .app-home {
   &__folders ~ &__medias {
-    margin-top: $gutterXXL;
+    margin-top: $gutterXXL - $gutterS;
+  }
+
+  &__folders, &__medias {
+    margin: -$gutterS;
+
+  }
+
+  &__file {
+    padding: $gutterS;
   }
 }
