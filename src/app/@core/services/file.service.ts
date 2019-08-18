@@ -1,8 +1,8 @@
 import { Injectable, NgZone } from '@angular/core';
-import { Folder, Image, Video, ImageFactory } from '../models';
+import { Folder, Image, Video } from '../models';
 import * as fs from 'fs';
 import { Subject } from 'rxjs';
-import { THUMBNAIL_FOLDER } from './thumbnail.service';
+import { THUMBNAIL_FOLDER, ThumbnailService } from './thumbnail.service';
 
 export const FORBIDDEN_FILES = [
   '$RECYCLE.BIN',
@@ -20,45 +20,84 @@ export class FileService {
   onFileList = new Subject<Folder>();
 
   constructor(
-    private imageFactory: ImageFactory,
+    private thumbnailService: ThumbnailService,
     private zone: NgZone,
   ) { }
 
-  ls(folder: Folder) {
-    // Checking cache
-    const folderCache = this.cache[folder.path];
-    if (folderCache) {
-      this.onFileList.next(folderCache);
-      return;
-    }
+  private generateThumbnails(folder: Folder) {
+    folder.medias.forEach((media: Image) => {
+      if (Image.isImage(media.path)) {
+        this.thumbnailService.setImageThumbnail(media);
+      }
+    });
+  }
 
-    fs.readdir(folder.path, (error, fileNames) => {
-      this.zone.run(() => {
-        if (error) return;
+  private __ls(folder: Folder, generateThumbnailsAndPreviews = true) {
+    return new Promise<Folder>((resolve, reject) => {
+      // Checking cache
+      const folderCache = this.cache[folder.path];
+      if (folderCache) {
+        resolve(folderCache.folder);
 
-        // Remove hidden and forbidden files
-        const filteredFileNames = fileNames.filter((fileName) => {
-          return fileName[0] !== '.' && FORBIDDEN_FILES.indexOf(fileName) === -1;
+        // Thumbnails aren't generated for inner folders
+        if (!folderCache.thumbnailsGenerated) {
+          folderCache.thumbnailsGenerated = true;
+          this.generateThumbnails(folderCache.folder);
+        }
+
+        return;
+      }
+
+      fs.readdir(folder.path, (error, fileNames) => {
+        this.zone.run(() => {
+          if (error) reject(error);
+
+          // Remove hidden and forbidden files
+          const filteredFileNames = fileNames.filter((fileName) => {
+            return fileName[0] !== '.' && FORBIDDEN_FILES.indexOf(fileName) === -1;
+          });
+
+          filteredFileNames.forEach(async fileName => {
+            const filePath = folder.path + '/' + fileName;
+
+            if (await Folder.isFolder(filePath)) {
+              const innerFolder = new Folder(filePath);
+
+              // Calling ls will generate the preview
+              if (generateThumbnailsAndPreviews) this.__ls(innerFolder, false);
+
+              folder.addFolder(innerFolder);
+            }
+            else if (Image.isImage(filePath)) {
+              const image = new Image(filePath);
+
+              // If we want to generate thumbnails or if it's the first image (= folder has no
+              // preview yet)
+              if (generateThumbnailsAndPreviews || !folder.nbImages) {
+                this.thumbnailService.setImageThumbnail(image).then(() => {
+                  folder.preview = image.thumbnail
+                });
+              }
+
+              folder.addImage(image);
+            }
+            else if (Video.isVideo(filePath)) {
+              folder.addVideo(new Video(filePath));
+            }
+          });
+
+          this.cache[folder.path] = {
+            folder,
+            thumbnailsGenerated: generateThumbnailsAndPreviews,
+          };
+          resolve(folder);
         });
-
-        filteredFileNames.forEach(async fileName => {
-          const filePath = folder.path + '/' + fileName;
-
-          if (await Folder.isFolder(filePath)) {
-            folder.addFolder(new Folder(filePath));
-          }
-          else if (Image.isImage(filePath)) {
-            folder.addImage(this.imageFactory.createImage(filePath));
-          }
-          else if (Video.isVideo(filePath)) {
-            folder.addVideo(new Video(filePath));
-          }
-        });
-
-        this.cache[folder.path] = folder;
-        this.onFileList.next(folder);
       });
     });
+  }
+
+  async ls(folder: Folder) {
+    this.onFileList.next(await this.__ls(folder));
   }
 
 }

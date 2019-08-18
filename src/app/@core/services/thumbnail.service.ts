@@ -81,17 +81,20 @@ export class ThumbnailService {
   }
 
   setImageThumbnail(image: Image) {
-    const imageThumbnailPath = this.thumbnailFolderPath + image.path;
-    const setThumbnail = () => {
-      this.zone.run(() => {
-        image.thumbnail = imageThumbnailPath;
-      });
-    }
+    return new Promise<void>((resolve, reject) => {
+      const imageThumbnailPath = this.thumbnailFolderPath + image.path;
+      const setThumbnail = () => {
+        this.zone.run(() => {
+          image.thumbnail = imageThumbnailPath;
+          resolve();
+        });
+      }
 
-    // Checking if thumbnail exists
-    fs.access(imageThumbnailPath, fs.constants.F_OK, (error) => {
-      if (!error) setThumbnail();
-      else this.addToQueue(image, imageThumbnailPath, setThumbnail);
+      // Checking if thumbnail exists
+      fs.access(imageThumbnailPath, fs.constants.F_OK, (error) => {
+        if (!error) setThumbnail();
+        else this.addToQueue(image, imageThumbnailPath, setThumbnail);
+      });
     });
   }
 

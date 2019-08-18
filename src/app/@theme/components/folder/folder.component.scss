@@ -5,6 +5,7 @@
     &__preview {
       position: relative;
 
+      overflow: hidden;
       border-radius: $radius;
       background-color: $grayS;
 
@@ -16,18 +17,25 @@
         padding-bottom: 100%;
       }
 
-      &__placeholder {
+      &__placeholder, &__image {
         position: absolute;
 
+        width: 100%;
+        height: 100%;
+      }
+
+      &__placeholder {
         display: flex;
         justify-content: center;
         align-items: center;
 
-        width: 100%;
-        height: 100%;
-
         color: $grayL;
         font-size: 4.0rem;
+      }
+
+      &__image {
+        object-fit: cover;
+        word-break: break-all;
       }
     }
 

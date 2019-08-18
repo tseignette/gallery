@@ -1,5 +1,11 @@
 <div class="app-folder__preview">
-  <i class="app-folder__preview__placeholder far fa-image"></i>
+  <i *ngIf="!folder.preview" class="app-folder__preview__placeholder far fa-image"></i>
+  <img
+    *ngIf="folder.preview"
+    class="app-folder__preview__image"
+    [src]="'file://' + folder.preview"
+    [alt]="folder.name"
+  >
 </div>
 
 <div class="app-folder__name">
