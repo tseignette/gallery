@@ -1,0 +1,25 @@
+<div *ngIf="open" class="app-slideshow">
+  <div class="app-slideshow__counter">{{ index + 1 }} of {{ medias.length }}</div>
+
+  <div class="app-slideshow__info">
+    {{ medias[index].name }}
+    <span *ngIf="medias[index].date">
+      ({{ medias[index].date | date: 'longDate' }}, {{ medias[index].date | date: 'shortTime' }})
+    </span>
+  </div>
+
+  <div class="app-slideshow__media">
+    <img
+      *ngIf="medias[index].type === 'image'"
+      [src]="'file://' + medias[index].path"
+      [alt]="medias[index].name"
+    >
+
+    <video
+      *ngIf="medias[index].type === 'video'"
+      [src]="'file://' + medias[index].path"
+      controls
+      disablePictureInPicture
+    ></video>
+  </div>
+</div>

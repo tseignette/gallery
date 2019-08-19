@@ -1,6 +1,6 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NotFoundComponent, LayoutComponent, AsideComponent, HeaderComponent, ButtonLinkComponent, PathComponent, FolderComponent, MediaComponent } from './components';
+import { NotFoundComponent, LayoutComponent, AsideComponent, HeaderComponent, ButtonLinkComponent, PathComponent, FolderComponent, MediaComponent, SlideshowComponent } from './components';
 import { NgForObjectPipe } from './pipes';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -13,6 +13,7 @@ const COMPONENTS = [
   MediaComponent,
   NotFoundComponent,
   PathComponent,
+  SlideshowComponent,
 ];
 
 const DIRECTIVES = [

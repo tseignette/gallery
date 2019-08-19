@@ -1,0 +1,67 @@
+@import 'variables';
+
+:host {
+  .app-slideshow {
+    position: absolute;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: white;
+
+    &__counter {
+      margin-top: $gutterS;
+
+      color: $grayXL;
+      font-weight: $fontWeightL;
+    }
+
+    &__info {
+      max-width: 100%;
+
+      padding: 0 $gutterS $gutterS $gutterS;
+
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      font-weight: $fontWeightL;
+
+      & > span {
+        color: $grayXL;
+        font-weight: $fontWeight;
+      }
+    }
+
+    &__media {
+      position: relative;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      flex: 1;
+      width: 100%;
+
+      & > img, & > video {
+        position: absolute;
+      }
+
+      & > img {
+        width: 100%;
+        height: 100%;
+
+        object-fit: contain;
+      }
+
+      & > video {
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
+  }
+}

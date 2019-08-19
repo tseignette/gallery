@@ -2,6 +2,8 @@ import * as path from 'path';
 
 export class File {
 
+  date: Date;
+
   name: string;
 
   parent: string;
@@ -16,6 +18,8 @@ export class File {
     this.name = split.slice(-1)[0];
     this.parent = split.slice(0, -1).join('/');
     this.path = path;
+
+    this.date = new Date(); // TODO: set real date
   }
 
   protected static checkExtension(filePath: string, allowedExtentions: string[]): boolean {
