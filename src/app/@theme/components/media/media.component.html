@@ -1,25 +1,27 @@
 <div class="app-media">
   <div class="app-media__thumbnail">
-    <div
-      *ngIf="media.type === 'image' && !media.thumbnail"
-      class="app-media__thumbnail__loader"
-    ></div>
+    <ng-container *ngIf="media.type === 'image'">
+      <div
+        *ngIf="!image.thumbnail"
+        class="app-media__thumbnail__loader"
+      ></div>
 
-    <img
-      *ngIf="media.type === 'image' && media.thumbnail"
-      [src]="'file://' + media.thumbnail"
-      [alt]="media.name"
-    >
+      <img
+        *ngIf="image.thumbnail"
+        [src]="'file://' + media.thumbnail"
+        [alt]="media.name"
+      >
+    </ng-container>
 
-    <video
-      #video
-      *ngIf="media.type === 'video'"
-      [src]="'file://' + media.path"
-      (mouseenter)="play()"
-      (mouseleave)="pause()"
-    ></video>
-    <div *ngIf="media.type === 'video'" class="app-media__thumbnail__video-duration">
-      {{ duration }}
-    </div>
+    <ng-container *ngIf="media.type === 'video'">
+      <video
+        #video
+        [src]="'file://' + media.path"
+        (mouseenter)="play()"
+        (mouseleave)="pause()"
+      ></video>
+
+      <div class="app-media__thumbnail__video-duration">{{ duration }}</div>
+    </ng-container>
   </div>
 </div>
