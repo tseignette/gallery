@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, OnChanges, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 import { Image, Video } from '../../../@core/models';
 
 @Component({
@@ -11,6 +11,8 @@ export class MediaComponent implements OnChanges {
   @ViewChild('video', { static: false }) templateVideo: ElementRef;
 
   @Input() media: Image|Video;
+
+  @Output() onClick = new EventEmitter<number|undefined>();
 
   duration: string;
 
@@ -56,8 +58,9 @@ export class MediaComponent implements OnChanges {
       this.duration =
         (hours ? hours + ':' : '') +
         minutes + ':' +
-        seconds;
+        seconds.toString().padStart(2, '0');
 
+      // Setting preview speed on x2
       this.templateVideo.nativeElement.playbackRate = 2;
 
       // Muting video
@@ -66,11 +69,18 @@ export class MediaComponent implements OnChanges {
   }
 
   play() {
-    this.templateVideo.nativeElement.play();
+    if (this.templateVideo.nativeElement.readyState > 1) this.templateVideo.nativeElement.play();
   }
 
   pause() {
-    this.templateVideo.nativeElement.pause();
+    if (this.templateVideo.nativeElement.readyState > 1) this.templateVideo.nativeElement.pause();
+  }
+
+  click() {
+    const emitValue = this.media.type === 'video' ?
+      this.templateVideo.nativeElement.currentTime : undefined;
+
+    this.onClick.emit(emitValue);
   }
 
 }

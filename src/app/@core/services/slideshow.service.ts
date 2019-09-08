@@ -29,9 +29,9 @@ export class SlideshowService {
     if (this.isOpen) this.onAction.next({ action: ACTIONS.NEXT });
   }
 
-  open(index: number, medias: (Image|Video)[]) {
+  open(index: number, currentTime: number, medias: (Image|Video)[]) {
     this.isOpen = true;
-    this.onAction.next({ action: ACTIONS.OPEN, data: { index, medias } });
+    this.onAction.next({ action: ACTIONS.OPEN, data: { index, currentTime, medias } });
   }
 
   previous() {

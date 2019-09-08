@@ -16,6 +16,7 @@
     >
 
     <video
+      #video
       *ngIf="medias[index].type === 'video'"
       [src]="'file://' + medias[index].path"
       controls

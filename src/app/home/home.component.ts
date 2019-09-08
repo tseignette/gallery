@@ -89,8 +89,8 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.galleryService.cd(folder);
   }
 
-  openSlideshow(index: number) {
-    this.slideshowService.open(index, this.fileList.medias);
+  openSlideshow(index: number, currentTime: number) {
+    this.slideshowService.open(index, currentTime, this.fileList.medias);
   }
 
 }
