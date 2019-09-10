@@ -72,17 +72,24 @@ export class FileService {
               const image = new Image(filePath);
 
               // If we want to generate thumbnails or if it's the first image (= folder has no
-              // preview yet)
+              // image preview yet)
               if (generateThumbnailsAndPreviews || !folder.nbImages) {
                 this.thumbnailService.setImageThumbnail(image).then(() => {
-                  folder.preview = image.thumbnail
+                  folder.imagePreview = image.thumbnail
                 });
               }
 
               folder.addImage(image);
             }
             else if (Video.isVideo(filePath)) {
-              folder.addVideo(new Video(filePath));
+              const video = new Video(filePath);
+
+              // If it's the first video (= folder has no video preview yet)
+              if (!folder.nbVideos) {
+                folder.videoPreview = video.path;
+              }
+
+              folder.addVideo(video);
             }
           });
 

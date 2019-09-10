@@ -17,7 +17,9 @@ export class Folder extends File {
 
   nbVideos = 0;
 
-  preview: string;
+  imagePreview: string;
+
+  videoPreview: string;
 
   constructor(path: string) {
     super(path);

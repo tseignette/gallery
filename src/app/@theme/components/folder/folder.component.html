@@ -1,11 +1,21 @@
 <div class="app-folder__preview">
-  <i *ngIf="!folder.preview" class="app-folder__preview__placeholder far fa-image"></i>
+  <i
+    *ngIf="!folder.imagePreview && !folder.videoPreview"
+    class="app-folder__preview__placeholder far fa-image"
+  ></i>
+
   <img
-    *ngIf="folder.preview"
+    *ngIf="folder.imagePreview"
     class="app-folder__preview__image"
-    [src]="'file://' + folder.preview"
+    [src]="'file://' + folder.imagePreview"
     [alt]="folder.name"
   >
+
+  <video
+    *ngIf="folder.videoPreview && !folder.imagePreview"
+    class="app-folder__preview__video"
+    [src]="'file://' + folder.videoPreview"
+  ></video>
 </div>
 
 <div class="app-folder__name">
