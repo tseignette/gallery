@@ -26,7 +26,6 @@ export class SlideshowComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.onSlideshowAction = this.slideshowService.onAction.subscribe(info => {
-
       switch (info.action) {
         case ACTIONS.CLOSE:
           this.open = false;
@@ -65,6 +64,10 @@ export class SlideshowComponent implements OnInit, OnDestroy {
     if (this.onSlideshowAction) {
       this.onSlideshowAction.unsubscribe();
     }
+  }
+
+  close() {
+    this.open = false;
   }
 
 }

@@ -9,7 +9,6 @@ Gallery, a macOS Photos alternative
 * add a progress indicator at the bottom of the aside section
 * implement different view types
 * image zoom feature
-* back button in slideshow view
 * video as folder preview
 * custom video controls
 * write a nice presentation page
