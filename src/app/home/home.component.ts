@@ -48,6 +48,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.filters = filters;
     });
 
+    this.galleryService.getCurrentFolder();
     this.filterService.getFilters();
   }
 

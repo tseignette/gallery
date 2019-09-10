@@ -3,6 +3,8 @@ import { Subject } from 'rxjs';
 import { remote } from 'electron';
 import { Folder } from '../models';
 import { ThumbnailService } from './thumbnail.service';
+import { SettingsService } from './settings.service';
+import * as fs from 'fs';
 
 @Injectable({
   providedIn: 'root'
@@ -21,9 +23,37 @@ export class GalleryService {
   onGalleryUpdate = new Subject<Folder>();
 
   constructor(
+    private settingsService: SettingsService,
     private thumbnailService: ThumbnailService,
     private zone: NgZone,
-  ) { }
+  ) {
+    this.restoreLastGalleryOpened();
+  }
+
+  private setGallery(galleryPath: string) {
+    const folder = new Folder(galleryPath);
+    this.settingsService.set('galleryPath', galleryPath);
+    this.thumbnailService.setGallery(folder);
+    this.onGalleryUpdate.next(folder);
+    this.cd(folder);
+  }
+
+  private restoreLastGalleryOpened() {
+    setTimeout(() => { // Wait for electron to be ready
+      const lastGallery = this.settingsService.get('galleryPath');
+
+      if (lastGallery) {
+        // Checking folder existence
+        fs.access(lastGallery, error => {
+          if (error) return;
+
+          this.zone.run(() => {
+            this.setGallery(lastGallery);
+          });
+        });
+      }
+    });
+  }
 
   cd(folder: Folder) {
     // Remove useless '/' if there is one
@@ -61,14 +91,15 @@ export class GalleryService {
         }
         else {
           this.zone.run(() => {
-            const folder = new Folder(galleryPath);
-            this.thumbnailService.setGallery(folder);
-            this.onGalleryUpdate.next(folder);
-            this.cd(folder);
+            this.setGallery(galleryPath);
           });
         }
       },
     );
+  }
+
+  getCurrentFolder() {
+    if (this.currentFolder) this.onCurrentFolderUpdate.next(this.currentFolder);
   }
 
 }
