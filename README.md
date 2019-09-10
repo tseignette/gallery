@@ -10,10 +10,14 @@ Gallery, a macOS Photos alternative
 * implement settings save (remember gallery folder)
 * implement different view types
 * image zoom feature
+* back button in slideshow view
+* video as folder preview
+* custom video controls
 * write a nice presentation page
 * implement folder creation and edition
 * favorite feature
 * advanced selection feature
 * trash feature instead of instant deletion
+* fix picture orientation issue
 * doc
 * tests
