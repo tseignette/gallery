@@ -5,7 +5,6 @@ Gallery, a macOS Photos alternative
 
 ## TODO
 
-* update thumbnails path so that it doesn't generate them again if root folder is moved
 * add a progress indicator at the bottom of the aside section
 * implement different view types
 * image zoom feature

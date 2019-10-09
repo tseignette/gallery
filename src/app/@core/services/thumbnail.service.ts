@@ -14,6 +14,8 @@ export const THUMBNAIL_HEIGHT = 200;
 })
 export class ThumbnailService {
 
+  private galleryPath: string;
+
   private nbThumbnailsDone = 0;
 
   private queue: { image: Image, thumbnailPath: string, callback: Function }[] = [];
@@ -77,12 +79,15 @@ export class ThumbnailService {
   }
 
   setGallery(gallery: Folder) {
+    this.galleryPath = gallery.path;
     this.thumbnailFolderPath = gallery.path + '/' + THUMBNAIL_FOLDER;
   }
 
   setImageThumbnail(image: Image) {
     return new Promise<void>((resolve, reject) => {
-      const imageThumbnailPath = this.thumbnailFolderPath + image.path;
+      const imageRelativePath = image.path.substr(this.galleryPath.length);
+      const imageThumbnailPath = this.thumbnailFolderPath + imageRelativePath;
+
       const setThumbnail = () => {
         this.zone.run(() => {
           image.thumbnail = imageThumbnailPath;
