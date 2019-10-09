@@ -2,6 +2,7 @@ export * from './button-link/button-link.component';
 export * from './folder/folder.component';
 export * from './layout/layout.component';
 export * from './layout/aside/aside.component';
+export * from './layout/bottom/bottom.component';
 export * from './layout/header/header.component';
 export * from './layout/slideshow/slideshow.component';
 export * from './media/media.component';

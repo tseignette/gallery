@@ -1,0 +1,37 @@
+@import 'variables';
+
+:host {
+  display: flex;
+  justify-content: flex-end;
+
+  margin: $gutterS;
+
+  .app-bottom {
+    &__slider {
+      display: flex;
+      align-items: center;
+
+      &::before, &::after {
+        @extend %font-awesome;
+        
+        content: '\f3e0';
+
+        color: $grayXXL;
+      }
+
+      &::before {
+        font-size: $textSizeS;
+      }
+
+      &::after {
+        font-size: $textSizeL;
+      }
+
+      & > input {
+        width: 8.0rem;
+
+        margin: 0 $gutterS;
+      }
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, HostListener } from '@angular/core';
-import { FileService, GalleryService, FilterService, SlideshowService } from '../@core/services';
+import { FileService, GalleryService, FilterService, SlideshowService, MediaSizeService } from '../@core/services';
 import { Subscription } from 'rxjs';
 import { Folder, Filters } from '../@core/models';
 
@@ -22,14 +22,19 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private onFilterSub: Subscription;
 
+  private onMediaSizeSub: Subscription;
+
   fileList: Folder;
 
   filters: Filters;
+
+  sizeClass: string;
 
   constructor(
     private fileService: FileService,
     private filterService: FilterService,
     private galleryService: GalleryService,
+    private mediaSizeService: MediaSizeService,
     private slideshowService: SlideshowService,
   ) { }
 
@@ -48,8 +53,13 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.filters = filters;
     });
 
+    this.onMediaSizeSub = this.mediaSizeService.onMediaSizeUpdate.subscribe((size) => {
+      this.sizeClass = 'col-' + size;
+    });
+
     this.galleryService.getCurrentFolder();
     this.filterService.getFilters();
+    this.mediaSizeService.getSize();
   }
 
   ngOnDestroy() {
@@ -63,6 +73,10 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     if (this.onFilterSub) {
       this.onFilterSub.unsubscribe();
+    }
+
+    if (this.onMediaSizeSub) {
+      this.onMediaSizeSub.unsubscribe();
     }
   }
 

@@ -7,7 +7,7 @@ import * as path from 'path';
 import { ProgressService } from './progress.service';
 
 export const THUMBNAIL_FOLDER = 'thumbnails';
-export const THUMBNAIL_HEIGHT = 200;
+export const THUMBNAIL_HEIGHT = 300;
 
 @Injectable({
   providedIn: 'root'

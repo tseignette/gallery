@@ -17,7 +17,8 @@
   <ng-container *ngFor="let media of fileList.medias; let i = index">
     <app-media
       [hidden]="!filters.show[media.type]"
-      class="app-home__file col-2"
+      class="app-home__file"
+      [ngClass]="sizeClass"
       [media]="media"
       (onClick)="openSlideshow(i, $event)"
     ></app-media>
