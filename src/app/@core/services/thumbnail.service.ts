@@ -14,6 +14,8 @@ export const THUMBNAIL_HEIGHT = 300;
 })
 export class ThumbnailService {
 
+  private currentTask: { image: Image, thumbnailPath: string, callback: Function };
+
   private galleryPath: string;
 
   private nbThumbnailsDone = 0;
@@ -29,21 +31,46 @@ export class ThumbnailService {
     private zone: NgZone,
   ) { }
 
+  private refreshProgress() {
+    this.zone.run(() => {
+      const done = this.nbThumbnailsDone;
+      const todo = this.queue.length + (this.currentTask ? 1 : 0);
+      const total = done + todo;
+      const title = 'Generating preview (' + (done + 1) + '/' + total + '): '
+
+      this.progressService.setProgressBar(
+        done,
+        todo,
+        !this.currentTask ? '' : title + this.currentTask.image.name
+      );
+    });
+  }
+
   private addToQueue(image: Image, thumbnailPath: string, callback: Function) {
     this.queue.push({ image, thumbnailPath, callback });
     this.checkQueue();
   }
 
   private checkQueue() {
-    this.progressService.setProgressBar(this.nbThumbnailsDone, this.queue.length);
+    // If it's already working, don't do anything
+    if (this.working) {
+      this.refreshProgress();
+      return;
+    }
 
-    if (this.working || !this.queue.length) {
+    // If the queue is empty, reset variables and return
+    if (!this.queue.length) {
+      this.currentTask = undefined;
+      this.refreshProgress();
       this.nbThumbnailsDone = 0;
       return;
     }
 
-    this.working = true;
+    // Otherwise, start a new task
     const task = this.queue.shift();
+    this.working = true;
+    this.currentTask = task;
+    this.refreshProgress();
     this.createImageThumbnail(task.image, task.thumbnailPath, task.callback);
   }
 

@@ -1,3 +1,10 @@
-<div>
+<div class="top">
   aside works!
+</div>
+
+<div class="bottom">
+  <div class="progress" *ngIf="progress >= 0">
+    <label for="aside-progress" *ngIf="label">{{ label }}</label>
+    <progress id="aside-progress" max="1" [value]="progress"></progress>
+  </div>
 </div>

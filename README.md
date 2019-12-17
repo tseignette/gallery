@@ -5,7 +5,6 @@ Gallery, a macOS Photos alternative
 
 ## TODO
 
-* add a progress indicator at the bottom of the aside section
 * implement different view types
 * image zoom feature
 * custom video controls

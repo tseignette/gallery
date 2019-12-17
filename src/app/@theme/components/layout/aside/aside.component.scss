@@ -1,10 +1,24 @@
 @import 'variables';
 
 :host {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 18.0rem;
-
   padding: $gutter;
-
   border-right: $border;
   background-color: $grayXXS;
+
+  .bottom {
+    .progress {
+      label {
+        font-size: $textSizeS;
+        word-break: break-all;
+      }
+
+      progress {
+        width: 100%;
+      }
+    }
+  }
 }
