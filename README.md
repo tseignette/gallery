@@ -5,7 +5,8 @@ Gallery, a macOS Photos alternative
 
 ## TODO
 
-* implement different view types
+* header: remove folder/image/video if there is none
+* add loader when listing files, loading an image, creating thumbnails
 * image zoom feature
 * custom video controls
 * write a nice presentation page

@@ -1,5 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
-import { Image, Folder } from '../models';
+import { Image, Folder, Video } from '../models';
 import * as fs from 'fs';
 import * as jimp from 'jimp';
 import * as mkdirp from 'mkdirp';
@@ -110,15 +110,15 @@ export class ThumbnailService {
     this.thumbnailFolderPath = gallery.path + '/' + THUMBNAIL_FOLDER;
   }
 
-  setImageThumbnail(image: Image) {
-    return new Promise<void>((resolve, reject) => {
+  private setImageThumbnail(image: Image) {
+    return new Promise<string>((resolve, reject) => {
       const imageRelativePath = image.path.substr(this.galleryPath.length);
       const imageThumbnailPath = this.thumbnailFolderPath + imageRelativePath;
 
       const setThumbnail = () => {
         this.zone.run(() => {
           image.thumbnail = imageThumbnailPath;
-          resolve();
+          resolve(imageThumbnailPath);
         });
       }
 
@@ -128,6 +128,34 @@ export class ThumbnailService {
         else this.addToQueue(image, imageThumbnailPath, setThumbnail);
       });
     });
+  }
+
+  setThumbnails(folder: Folder) {
+    if (folder.areThumbnailsSet) return;
+
+    // Setting images thumbnails
+    for (const media of folder.medias) {
+      if (media.type === 'image') {
+        this.setImageThumbnail(<Image> media);
+      }
+    }
+
+    // Setting inner folders previews
+    for (const innerFolder of folder.folders) {
+      if (innerFolder.nbMedias) {
+        const previewMedia = innerFolder.medias[0];
+
+        if (previewMedia.type === 'image') {
+          this.setImageThumbnail(<Image> previewMedia)
+            .then(thumbPath => innerFolder.imagePreview = thumbPath);
+        }
+        else {
+          innerFolder.videoPreview = previewMedia.path;
+        }
+      }
+    }
+
+    folder.areThumbnailsSet = true;
   }
 
 }

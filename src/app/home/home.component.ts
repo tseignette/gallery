@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.onCurrentFolderSub = this.galleryService.onCurrentFolderUpdate.subscribe(
       (currentFolder) => {
-        this.fileService.ls(currentFolder);
+        this.fileService.ls(currentFolder.path);
       }
     );
 

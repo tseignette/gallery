@@ -9,6 +9,39 @@
   border-right: $border;
   background-color: $grayXXS;
 
+  .top {
+    .group {
+      user-select: none;
+
+      .title {
+        margin-bottom: $gutterS;
+        color: $grayXL;
+        font-size: $textSizeS;
+        font-weight: $fontWeightXL;
+      }
+
+      .list {
+        margin: 0 #{-$gutter};
+
+        & > div {
+          padding: 0.4rem 0 0.4rem #{$gutter + $gutterL};
+          color: $grayXXL;
+          font-weight: $fontWeightL;
+
+          &.selected {
+            background-color: $gray;
+          }
+
+          i {
+            width: 1.6rem;
+            margin-right: $gutterS;
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+
   .bottom {
     .progress {
       label {

@@ -1,5 +1,18 @@
 <div class="top">
-  aside works!
+  <div class="group">
+    <div class="title">Views</div>
+
+    <div class="list">
+      <div
+        *ngFor="let viewId of VIEWS | ngForObject"
+        (click)="chooseView(viewId)"
+        [ngClass]="{ selected: viewId === viewType }"
+      >
+        {{ view | json }}
+        <i [ngClass]="VIEWS[viewId].icon"></i>{{ VIEWS[viewId].name }}
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="bottom">

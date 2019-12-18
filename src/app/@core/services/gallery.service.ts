@@ -18,6 +18,8 @@ export class GalleryService {
    */
   private isChoosingGallery = false;
 
+  private gallery: Folder;
+
   onCurrentFolderUpdate = new Subject<Folder>();
 
   onGalleryUpdate = new Subject<Folder>();
@@ -32,6 +34,7 @@ export class GalleryService {
 
   private setGallery(galleryPath: string) {
     const folder = new Folder(galleryPath);
+    this.gallery = folder;
     this.settingsService.set('galleryPath', galleryPath);
     this.thumbnailService.setGallery(folder);
     this.onGalleryUpdate.next(folder);
@@ -55,14 +58,14 @@ export class GalleryService {
     });
   }
 
-  cd(folder: Folder) {
+  cd(folder: Folder, forceUpdate = false) {
     // Remove useless '/' if there is one
     if (folder.path.slice(-1) === '/') {
       folder = new Folder(folder.path.slice(0, -1));
     }
 
     // Navigate only if current folder isn't defined or if it's different than next folder
-    if (!this.currentFolder || folder.path !== this.currentFolder.path) {
+    if (forceUpdate || !this.currentFolder || folder.path !== this.currentFolder.path) {
       this.currentFolder = folder;
       this.onCurrentFolderUpdate.next(folder);
     }
@@ -100,6 +103,10 @@ export class GalleryService {
 
   getCurrentFolder() {
     if (this.currentFolder) this.onCurrentFolderUpdate.next(this.currentFolder);
+  }
+
+  goBackHome() {
+    if (this.gallery) this.cd(this.gallery, true);
   }
 
 }
