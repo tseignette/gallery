@@ -13,17 +13,17 @@
 
       &::before, &::after {
         @extend %font-awesome;
-        
-        content: '\f3e0';
 
         color: $grayXXL;
       }
 
       &::before {
+        content: '\f00a';
         font-size: $textSizeS;
       }
 
       &::after {
+        content: '\f009';
         font-size: $textSizeL;
       }
 

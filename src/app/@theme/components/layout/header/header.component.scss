@@ -43,11 +43,8 @@
             margin-right: $gutter;
           }
 
-          & > input[type=checkbox] {
-            margin-right: $gutterS;
-          }
-
           & > label {
+            padding-left: $gutterS;
             user-select: none;
             font-size: $textSizeS;
           }
