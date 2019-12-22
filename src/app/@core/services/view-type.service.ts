@@ -14,8 +14,6 @@ export interface ViewType {
   strategy: LsStrategy,
 }
 
-export const DEFAULT_VIEW_TYPE = 'folder';
-
 export const VIEW_TYPES = {
   all: { id: 'all', icon: 'fas fa-th', name: 'Everything', strategy: new LsAllStrategy() },
   event: { id: 'event', icon: 'fas fa-calendar-day', name: 'Event', strategy: new LsEventStrategy() },
@@ -38,12 +36,8 @@ export class ViewTypeService {
     this.restoreLastViewType();
   }
 
-  private restoreLastViewType() {
-    setTimeout(() => { // Wait for electron to be ready
-      const lastViewTypeId = this.settingsService.get('viewTypeId');
-
-      this.setViewType(lastViewTypeId ? lastViewTypeId : DEFAULT_VIEW_TYPE);
-    });
+  private async restoreLastViewType() {
+    this.setViewType(await this.settingsService.get('viewTypeId'));
   }
 
   getViewType() {

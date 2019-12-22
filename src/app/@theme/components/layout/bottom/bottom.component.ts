@@ -15,12 +15,9 @@ export class BottomComponent implements OnInit {
     private settingsService: SettingsService,
   ) { }
 
-  ngOnInit() {
-    setTimeout(() => { // Wait for electron to be ready
-      const settingsSize = this.settingsService.get('mediaSize');
-      this.size = settingsSize ? settingsSize : 20;
-      this.onSizeChange();
-    })
+  async ngOnInit() {
+    this.size = await this.settingsService.get('mediaSize');
+    this.onSizeChange();
   }
 
   onSizeChange() {

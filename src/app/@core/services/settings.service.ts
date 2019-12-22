@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import * as settings from 'electron-app-settings';
 
+export const DEFAULT_SETTINGS = {
+  mediaSize: 20,
+  viewTypeId: 'folder',
+};
+
 @Injectable({
   providedIn: 'root'
 })
@@ -12,8 +17,13 @@ export class SettingsService {
     settings.set(name, data);
   }
 
-  get(name: string): any {
-    return settings.get(name);
+  async get(name: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => { // Wait for Electron to be ready
+        const setting = settings.get(name);
+        resolve((setting !== null && setting !== undefined) ? setting : DEFAULT_SETTINGS[name]);
+      });
+    });
   }
 
 }

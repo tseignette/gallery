@@ -15,8 +15,6 @@ export class GalleryService {
    */
   private isChoosingGallery = false;
 
-  private gallery: Folder;
-
   onGalleryUpdate = new Subject<Folder>();
 
   constructor(
@@ -28,26 +26,23 @@ export class GalleryService {
 
   private setGallery(galleryPath: string) {
     const folder = new Folder(galleryPath);
-    this.gallery = folder;
     this.settingsService.set('galleryPath', galleryPath);
     this.onGalleryUpdate.next(folder);
   }
 
-  private restoreLastGalleryOpened() {
-    setTimeout(() => { // Wait for electron to be ready
-      const lastGallery = this.settingsService.get('galleryPath');
+  private async restoreLastGalleryOpened() {
+    const lastGallery = await this.settingsService.get('galleryPath');
 
-      if (lastGallery) {
-        // Checking folder existence
-        fs.access(lastGallery, error => {
-          if (error) return;
+    if (lastGallery) {
+      // Checking folder existence
+      fs.access(lastGallery, error => {
+        if (error) return;
 
-          this.zone.run(() => {
-            this.setGallery(lastGallery);
-          });
+        this.zone.run(() => {
+          this.setGallery(lastGallery);
         });
-      }
-    });
+      });
+    }
   }
 
   selectGallery() {
