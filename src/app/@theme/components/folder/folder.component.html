@@ -1,23 +1,30 @@
-<div class="app-folder__preview">
+<div class="preview">
   <i
     *ngIf="!folder.imagePreview && !folder.videoPreview"
-    class="app-folder__preview__placeholder far fa-image"
+    class="placeholder far fa-image"
   ></i>
 
   <img
     *ngIf="folder.imagePreview"
-    class="app-folder__preview__image"
+    class="image"
     [src]="'file://' + folder.imagePreview"
     [alt]="folder.name"
   >
 
   <video
     *ngIf="folder.videoPreview && !folder.imagePreview"
-    class="app-folder__preview__video"
+    class="video"
     [src]="'file://' + folder.videoPreview"
   ></video>
 </div>
 
-<div class="app-folder__name">
-  {{ folder.name }}
+<div class="date" *ngIf="folder.isEvent">
+  {{ folder.start | date: 'mediumDate' }}
+  <ng-container *ngIf="folder.start !== folder.end">
+    - {{ folder.end | date: 'mediumDate' }}
+  </ng-container>
+</div>
+
+<div class="name">
+  {{ folder.prettyName }}
 </div>

@@ -36,7 +36,7 @@ export class CdService {
       if (!this.areCdConditionsMet()) return;
 
       // Force cd in case we are still in the root folder (ls must be triggered)
-      this.cd(this.gallery, true);
+      this.cd(this.currentFolder, true);
     });
   }
 

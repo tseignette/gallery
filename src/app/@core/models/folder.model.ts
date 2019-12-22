@@ -27,8 +27,49 @@ export class Folder extends File {
 
   videoPreview: string;
 
+  prettyName = this.name;
+
+  isEvent = false;
+
+  start: Date;
+
+  end: Date;
+
   constructor(path: string) {
     super(path, 'folder');
+
+    this.initEvent();
+  }
+
+  /**
+   * TODO: doc
+   */
+  private initEvent() {
+    if (this.name[0] !== '[') return;
+
+    let start: Date;
+    let end: Date;
+    let prettyNamePadding;
+
+    if (this.name[11] === ']') {
+      prettyNamePadding = 13;
+      start = new Date(this.name.slice(1, 11).replace(/:/g, '/'));
+      end = start;
+    }
+    else if (this.name[22] === ']') {
+      prettyNamePadding = 24;
+      start = new Date(this.name.slice(1, 11).replace(/:/g, '/'));
+      end = new Date(this.name.slice(12, 22).replace(/:/g, '/'));
+    }
+    else return;
+
+    // If one of the date is invalid, don't consider it as an event folder
+    if (isNaN(start.valueOf()) || isNaN(end.valueOf())) return;
+
+    this.isEvent = true;
+    this.start = start;
+    this.end = end;
+    this.prettyName = this.name.slice(prettyNamePadding);
   }
 
   static isFolder(filePath: string) {

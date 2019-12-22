@@ -9,7 +9,14 @@
   </div>
   
   <div class="app-header__content__current-folder-name">
-    {{ currentFolder?.name }}
+    {{ currentFolder?.prettyName }}
+
+    <span class="date" *ngIf="currentFolder?.isEvent">
+      {{ currentFolder.start | date: 'mediumDate' }}
+      <ng-container *ngIf="currentFolder.start !== currentFolder.end">
+        - {{ currentFolder.end | date: 'mediumDate' }}
+      </ng-container>
+    </span>
   </div>
 
   <div class="app-header__content__row">

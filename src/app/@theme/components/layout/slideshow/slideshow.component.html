@@ -1,6 +1,8 @@
 <div *ngIf="open" class="app-slideshow">
   <div class="app-slideshow__header">
-    <div class="app-slideshow__header__back-button-ghost"></div>
+    <div class="app-slideshow__header__back-button" (click)="close()">
+      <i class="fas fa-chevron-left"></i>
+    </div>
 
     <div class="app-slideshow__header__info">
       <div class="app-slideshow__header__info__counter">{{ index + 1 }} of {{ medias.length }}</div>
@@ -13,9 +15,7 @@
       </div>
     </div>
 
-    <div class="app-slideshow__header__back-button" (click)="close()">
-      <i class="fas fa-times"></i>
-    </div>
+    <div class="app-slideshow__header__back-button-ghost"></div>
   </div>
 
   <div class="app-slideshow__media">

@@ -25,6 +25,12 @@
 
         font-size: $titleSize;
         font-weight: $fontWeightXL;
+
+        .date {
+          color: $grayXL;
+          font-size: $textSizeL;
+          font-weight: $fontWeightL;
+        }
       }
 
       &__info {
