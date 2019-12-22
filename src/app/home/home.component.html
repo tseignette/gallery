@@ -19,9 +19,8 @@
     *ngIf="fileList && fileList.nbMedias"
     class="medias row"
   >
-    <ng-container *ngFor="let media of fileList.medias; let i = index">
+    <ng-container *ngFor="let media of filteredMediaList; let i = index">
       <app-media
-        [hidden]="!filters.show[media.type]"
         class="file"
         [ngClass]="sizeClass"
         [media]="media"

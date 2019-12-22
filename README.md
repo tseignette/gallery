@@ -5,7 +5,6 @@ Gallery, a macOS Photos alternative
 
 ## TODO
 
-* header: remove folder/image/video if there is none
 * add loader when loading an image, creating thumbnails
 * image zoom feature
 * custom video controls

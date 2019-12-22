@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { LsStrategy } from './ls/ls-strategy.model';
 import { LsFolderStrategy } from './ls/ls-folder-strategy.model';
 import { LsEventStrategy } from './ls/ls-event-strategy.model';
+import { SlideshowService } from './slideshow.service';
 
 export interface ViewType {
   id: string,
@@ -32,6 +33,7 @@ export class ViewTypeService {
 
   constructor(
     private settingsService: SettingsService,
+    private slideshowService: SlideshowService,
   ) {
     this.restoreLastViewType();
   }
@@ -54,6 +56,7 @@ export class ViewTypeService {
     if (viewTypeId === this.viewTypeId) return;
 
     this.viewTypeId = viewTypeId;
+    this.slideshowService.close();
     this.settingsService.set('viewTypeId', viewTypeId);
     this.onViewTypeUpdate.next(VIEW_TYPES[this.viewTypeId]);
   }

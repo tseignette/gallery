@@ -1,7 +1,7 @@
 <app-aside></app-aside>
 
 <div *ngIf="!isGalleryFolderChosen" class="app-layout__no-gallery">
-  <app-button-link (click)="selectGallery()">Choose a folder</app-button-link>
+  <app-button-link (click)="selectGallery()">Open a folder</app-button-link>
 </div>
   
 <div [hidden]="!isGalleryFolderChosen" class="app-layout__header-content">
