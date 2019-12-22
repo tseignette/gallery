@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, HostListener } from '@angular/core';
-import { FileService, GalleryService, FilterService, SlideshowService, MediaSizeService } from '../@core/services';
+import { FileService, FilterService, SlideshowService, MediaSizeService, CdService, STATUS } from '../@core/services';
 import { Subscription } from 'rxjs';
 import { Folder, Filters } from '../@core/models';
 
@@ -16,67 +16,72 @@ export enum KEY_CODE {
 })
 export class HomeComponent implements OnInit, OnDestroy {
 
-  private onCurrentFolderSub: Subscription;
+  private onCdSub: Subscription;
 
-  private onFileListSub: Subscription;
+  private onLsSub: Subscription;
 
-  private onFilterSub: Subscription;
+  private onFiltersUpdateSub: Subscription;
 
-  private onMediaSizeSub: Subscription;
+  private onMediaSizeUpdateSub: Subscription;
 
   fileList: Folder;
 
   filters: Filters;
 
+  loading = true;
+
   sizeClass: string;
 
   constructor(
+    private cdService: CdService,
     private fileService: FileService,
     private filterService: FilterService,
-    private galleryService: GalleryService,
     private mediaSizeService: MediaSizeService,
     private slideshowService: SlideshowService,
   ) { }
 
   ngOnInit() {
-    this.onCurrentFolderSub = this.galleryService.onCurrentFolderUpdate.subscribe(
-      (currentFolder) => {
-        this.fileService.ls(currentFolder.path);
-      }
-    );
+    this.onLsSub = this.fileService.onLs.subscribe(info => {
+      switch (info.status) {
+        case STATUS.LS_START:
+          this.loading = true;
+          delete this.fileList;
+          break;
 
-    this.onFileListSub = this.fileService.onFileList.subscribe((fileList) => {
-      this.fileList = fileList;
+        case STATUS.LS_END:
+          this.loading = false;
+          this.fileList = info.fileList;
+          break;
+      }
     });
 
-    this.onFilterSub = this.filterService.onFiltersUpdate.subscribe((filters) => {
+    this.onFiltersUpdateSub = this.filterService.onFiltersUpdate.subscribe((filters) => {
       this.filters = filters;
     });
 
-    this.onMediaSizeSub = this.mediaSizeService.onMediaSizeUpdate.subscribe((size) => {
+    this.onMediaSizeUpdateSub = this.mediaSizeService.onMediaSizeUpdate.subscribe((size) => {
       this.sizeClass = 'col-' + size;
     });
 
-    this.galleryService.getCurrentFolder();
     this.filterService.getFilters();
     this.mediaSizeService.getSize();
   }
 
   ngOnDestroy() {
-    if (this.onCurrentFolderSub) {
-      this.onCurrentFolderSub.unsubscribe();
+    if (this.onCdSub) {
+      this.onCdSub.unsubscribe();
     }
 
-    if (this.onFileListSub) {
-      this.onFileListSub.unsubscribe();
+    if (this.onLsSub) {
+      this.onLsSub.unsubscribe();
     }
 
-    if (this.onFilterSub) {
-      this.onFilterSub.unsubscribe();
+    if (this.onFiltersUpdateSub) {
+      this.onFiltersUpdateSub.unsubscribe();
     }
 
-    if (this.onMediaSizeSub) {
-      this.onMediaSizeSub.unsubscribe();
+    if (this.onMediaSizeUpdateSub) {
+      this.onMediaSizeUpdateSub.unsubscribe();
     }
   }
 
@@ -101,7 +106,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   cd(folder: Folder) {
-    this.galleryService.cd(folder);
+    this.cdService.cd(folder);
   }
 
   openSlideshow(index: number, currentTime: number) {

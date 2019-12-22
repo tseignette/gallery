@@ -5,6 +5,7 @@ import * as jimp from 'jimp';
 import * as mkdirp from 'mkdirp';
 import * as path from 'path';
 import { ProgressService } from './progress.service';
+import { GalleryService } from './gallery.service';
 
 export const THUMBNAIL_FOLDER = 'thumbnails';
 export const THUMBNAIL_HEIGHT = 300;
@@ -27,9 +28,15 @@ export class ThumbnailService {
   private working = false;
 
   constructor(
+    private galleryService: GalleryService,
     private progressService: ProgressService,
     private zone: NgZone,
-  ) { }
+  ) {
+    this.galleryService.onGalleryUpdate.subscribe(gallery => {
+      this.galleryPath = gallery.path;
+      this.thumbnailFolderPath = gallery.path + '/' + THUMBNAIL_FOLDER;
+    });
+  }
 
   private refreshProgress() {
     this.zone.run(() => {
@@ -103,11 +110,6 @@ export class ThumbnailService {
         }
       )
       .catch(endCallback);
-  }
-
-  setGallery(gallery: Folder) {
-    this.galleryPath = gallery.path;
-    this.thumbnailFolderPath = gallery.path + '/' + THUMBNAIL_FOLDER;
   }
 
   private setImageThumbnail(image: Image) {

@@ -12,9 +12,7 @@ export class Image extends File {
   thumbnail: string;
 
   constructor(path: string) {
-    super(path);
-
-    this.type = 'image';
+    super(path, 'image');
   }
 
   static isImage(filePath: string) {

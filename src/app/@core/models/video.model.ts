@@ -6,10 +6,8 @@ export const ALLOWED_VIDEOS = [
 
 export class Video extends File {
 
-  constructor(path: string) {
-    super(path);
-
-    this.type = 'video';
+  constructor(path: string,) {
+    super(path, 'video');
   }
 
   static isVideo(filePath: string) {

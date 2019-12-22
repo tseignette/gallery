@@ -1,26 +1,32 @@
-<div
-  *ngIf="fileList && fileList.nbFolders && filters.show.folder"
-  class="app-home__folders row"
->
-  <app-folder
-    *ngFor="let folder of fileList.folders"
-    class="app-home__file col-2"
-    [folder]="folder"
-    (click)="cd(folder)"
-  ></app-folder>
+<div *ngIf="loading" class="spinner">
+  <i class="fas fa-circle-notch fa-spin"></i>
 </div>
 
-<div
-  *ngIf="fileList && fileList.nbMedias"
-  class="app-home__medias row"
->
-  <ng-container *ngFor="let media of fileList.medias; let i = index">
-    <app-media
-      [hidden]="!filters.show[media.type]"
-      class="app-home__file"
-      [ngClass]="sizeClass"
-      [media]="media"
-      (onClick)="openSlideshow(i, $event)"
-    ></app-media>
-  </ng-container>
-</div>
+<ng-container *ngIf="!loading">
+  <div
+    *ngIf="fileList && fileList.nbFolders && filters.show.folder"
+    class="folders row"
+  >
+    <app-folder
+      *ngFor="let folder of fileList.folders"
+      class="file col-2"
+      [folder]="folder"
+      (click)="cd(folder)"
+    ></app-folder>
+  </div>
+  
+  <div
+    *ngIf="fileList && fileList.nbMedias"
+    class="medias row"
+  >
+    <ng-container *ngFor="let media of fileList.medias; let i = index">
+      <app-media
+        [hidden]="!filters.show[media.type]"
+        class="file"
+        [ngClass]="sizeClass"
+        [media]="media"
+        (onClick)="openSlideshow(i, $event)"
+      ></app-media>
+    </ng-container>
+  </div>
+</ng-container>

@@ -1,16 +1,23 @@
 @import 'variables';
 
-.app-home {
-  &__folders ~ &__medias {
-    margin-top: $gutterXXL - $gutterS;
-  }
+.spinner {
+  display: flex;
+  justify-content: center;
 
-  &__folders, &__medias {
-    margin: -$gutterS;
-
+  i {
+    font-size: 2.5rem;
   }
+}
 
-  &__file {
-    padding: $gutterS;
-  }
+.folders ~ .medias {
+  margin-top: $gutterXXL - $gutterS;
+}
+
+.folders, .medias {
+  margin: -$gutterS;
+
+}
+
+.file {
+  padding: $gutterS;
 }

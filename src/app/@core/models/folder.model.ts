@@ -24,9 +24,7 @@ export class Folder extends File {
   videoPreview: string;
 
   constructor(path: string) {
-    super(path);
-
-    this.type = 'folder';
+    super(path, 'folder');
   }
 
   static isFolder(filePath: string) {

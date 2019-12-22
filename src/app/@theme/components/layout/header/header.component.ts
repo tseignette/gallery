@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { GalleryService, FileService, FilterService } from '../../../../@core/services';
+import { GalleryService, FileService, FilterService, CdService, STATUS } from '../../../../@core/services';
 import { Subscription } from 'rxjs';
 import { Folder, Filters } from '../../../../@core/models';
 
@@ -10,11 +10,11 @@ import { Folder, Filters } from '../../../../@core/models';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
 
-  private currentFolderUpdateSub: Subscription;
+  private onCdSub: Subscription;
 
-  private fileListSub: Subscription;
+  private onLsSub: Subscription;
 
-  private galleryUpdateSub: Subscription;
+  private onGalleryUpdate: Subscription;
 
   FILTERS_TEXT = {
     folder: 'folders',
@@ -31,23 +31,25 @@ export class HeaderComponent implements OnInit, OnDestroy {
   galleryFolder: Folder;
 
   constructor(
+    private cdService: CdService,
     private fileService: FileService,
     private filterService: FilterService,
     private galleryService: GalleryService,
   ) { }
 
   ngOnInit() {
-    this.currentFolderUpdateSub = this.galleryService.onCurrentFolderUpdate.subscribe(
+    this.onCdSub = this.cdService.onCd.subscribe(
       (currentFolder) => {
         this.currentFolder = currentFolder;
       }
     );
 
-    this.fileListSub = this.fileService.onFileList.subscribe((fileList) => {
-      this.fileList = fileList;
+    this.onLsSub = this.fileService.onLs.subscribe(info => {
+      if (info.status === STATUS.LS_END)
+      this.fileList = info.fileList;
     });
 
-    this.galleryUpdateSub = this.galleryService.onGalleryUpdate.subscribe(
+    this.onGalleryUpdate = this.galleryService.onGalleryUpdate.subscribe(
       (galleryFolder) => {
         this.galleryFolder = galleryFolder;
       }
@@ -58,16 +60,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.currentFolderUpdateSub) {
-      this.currentFolderUpdateSub.unsubscribe();
+    if (this.onCdSub) {
+      this.onCdSub.unsubscribe();
     }
 
-    if (this.fileListSub) {
-      this.fileListSub.unsubscribe();
+    if (this.onLsSub) {
+      this.onLsSub.unsubscribe();
     }
 
-    if (this.galleryUpdateSub) {
-      this.galleryUpdateSub.unsubscribe();
+    if (this.onGalleryUpdate) {
+      this.onGalleryUpdate.unsubscribe();
     }
   }
 

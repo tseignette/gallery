@@ -1,6 +1,6 @@
 import { Component, OnChanges, Input } from '@angular/core';
 import { Folder } from '../../../@core/models';
-import { GalleryService } from '../../../@core/services';
+import { CdService } from '../../../@core/services';
 
 @Component({
   selector: 'app-path',
@@ -16,7 +16,7 @@ export class PathComponent implements OnChanges {
   path: string[];
 
   constructor(
-    private galleryService: GalleryService,
+    private cdService: CdService,
   ) { }
 
   ngOnChanges() {
@@ -30,7 +30,7 @@ export class PathComponent implements OnChanges {
 
   cd(folderIndex: number) {
     const path = this.baseFolder.path + '/' + this.path.slice(1, folderIndex + 1).join('/');
-    this.galleryService.cd(new Folder(path));
+    this.cdService.cd(new Folder(path));
   }
 
 }

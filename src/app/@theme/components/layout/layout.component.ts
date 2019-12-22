@@ -9,7 +9,7 @@ import { GalleryService } from '../../../@core/services';
 })
 export class LayoutComponent implements OnInit, OnDestroy {
 
-  private galleryUpdateSub: Subscription;
+  private onGalleryUpdateSub: Subscription;
 
   isGalleryFolderChosen: boolean;
 
@@ -18,16 +18,14 @@ export class LayoutComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.galleryUpdateSub = this.galleryService.onGalleryUpdate.subscribe(
-      (galleryFolder) => {
-        this.isGalleryFolderChosen = !!galleryFolder;
-      }
-    );
+    this.onGalleryUpdateSub = this.galleryService.onGalleryUpdate.subscribe(galleryFolder => {
+      this.isGalleryFolderChosen = !!galleryFolder;
+    });
   }
 
   ngOnDestroy() {
-    if (this.galleryUpdateSub) {
-      this.galleryUpdateSub.unsubscribe();
+    if (this.onGalleryUpdateSub) {
+      this.onGalleryUpdateSub.unsubscribe();
     }
   }
 

@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
-import { LsAllStrategy } from '../file/ls-all-strategy.model';
-import { SettingsService } from '../settings.service';
+import { LsAllStrategy } from './ls/ls-all-strategy.model';
+import { SettingsService } from './settings.service';
 import { Subject } from 'rxjs';
-import { LsStrategy } from '../file/ls-strategy.model';
-import { LsFolderStrategy } from '../file/ls-folder-strategy.model';
-import { GalleryService } from '../gallery.service';
-import { LsEventStrategy } from '../file/ls-event-strategy.model';
+import { LsStrategy } from './ls/ls-strategy.model';
+import { LsFolderStrategy } from './ls/ls-folder-strategy.model';
+import { LsEventStrategy } from './ls/ls-event-strategy.model';
 
-export interface VIEW_TYPE {
+export interface ViewType {
   id: string,
   icon: string,
   name: string,
@@ -29,10 +28,9 @@ export class ViewTypeService {
 
   private viewTypeId: string;
 
-  onViewTypeUpdate = new Subject<VIEW_TYPE>();
+  onViewTypeUpdate = new Subject<ViewType>();
 
   constructor(
-    private galleryService: GalleryService,
     private settingsService: SettingsService,
   ) {
     this.restoreLastViewType();
@@ -48,7 +46,7 @@ export class ViewTypeService {
 
   getViewType() {
     if (this.viewTypeId) {
-      this.onViewTypeUpdate.next(VIEW_TYPES[this.viewTypeId]);
+      return VIEW_TYPES[this.viewTypeId];
     }
   }
 
@@ -57,8 +55,7 @@ export class ViewTypeService {
 
     this.viewTypeId = viewTypeId;
     this.settingsService.set('viewTypeId', viewTypeId);
-    this.getViewType();
-    this.galleryService.goBackHome();
+    this.onViewTypeUpdate.next(VIEW_TYPES[this.viewTypeId]);
   }
 
 }

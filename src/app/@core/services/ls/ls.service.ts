@@ -3,10 +3,16 @@ import { Folder } from '../../models';
 import * as fs from 'fs';
 import { Subject } from 'rxjs';
 import { THUMBNAIL_FOLDER, ThumbnailService } from '../thumbnail.service';
-import { ViewTypeService } from '../view-type/view-type.service';
+import { ViewTypeService } from '../view-type.service';
 import { LsStrategy } from './ls-strategy.model';
+import { CdService } from '../cd.service';
 
-export const FORBIDDEN_FILES = [
+export const enum STATUS {
+  LS_START,
+  LS_END
+};
+
+export const EXCLUDED_FILES = [
   '$RECYCLE.BIN',
   'Thumbs.db',
   THUMBNAIL_FOLDER,
@@ -21,25 +27,23 @@ export class FileService {
 
   private strategyCache = {};
 
-  private lsStrategy: LsStrategy;
-
-  private viewTypeId: string;
-
-  onFileList = new Subject<Folder>();
+  onLs = new Subject<{ status: STATUS, fileList?: Folder }>();
 
   constructor(
+    private cdService: CdService,
     private thumbnailService: ThumbnailService,
     private viewTypeService: ViewTypeService,
     private zone: NgZone,
   ) {
-    this.viewTypeService.onViewTypeUpdate.subscribe(viewType => {
-      this.viewTypeId = viewType.id;
-      this.lsStrategy = viewType.strategy;
+    this.cdService.onCd.subscribe(currentFolder => {
+      this.ls(currentFolder.path);
     });
-
-    this.viewTypeService.getViewType();
   }
 
+  /**
+   * TODO: doc
+   * @param folderPath 
+   */
   private __ls(folderPath: string) {
     return new Promise<Folder>((resolve, reject) => {
       // Checking cache
@@ -56,7 +60,7 @@ export class FileService {
 
           // Remove hidden and forbidden files
           const filteredFileNames = fileNames.filter((fileName) => {
-            return fileName[0] !== '.' && FORBIDDEN_FILES.indexOf(fileName) === -1;
+            return fileName[0] !== '.' && EXCLUDED_FILES.indexOf(fileName) === -1;
           });
 
           const folder = new Folder(folderPath);
@@ -72,13 +76,19 @@ export class FileService {
     });
   }
 
-  private buildList(folderPath: string, depth = 0) {
+  /**
+   * TODO: doc
+   * @param folderPath 
+   * @param lsStrategy 
+   * @param depth 
+   */
+  private buildList(folderPath: string, lsStrategy: LsStrategy, depth = 0) {
     return new Promise<Folder>(async (resolve, reject) => {
       const fileList = await this.__ls(folderPath);
       
-      if (await this.lsStrategy.continue(fileList, depth)) {
+      if (await lsStrategy.continue(fileList, depth)) {
         for (let innerFolder of fileList.folders) {
-          await this.buildList(innerFolder.path, ++depth);
+          await this.buildList(innerFolder.path, lsStrategy, ++depth);
         }
       }
       else {
@@ -91,24 +101,31 @@ export class FileService {
     });
   }
 
+  /**
+   * TODO: doc
+   * @param folderPath 
+   */
   async ls(folderPath: string) {
-    let fileList;
+    this.onLs.next({ status: STATUS.LS_START });
 
-    if (this.strategyCache[this.viewTypeId] && this.strategyCache[this.viewTypeId][folderPath]) {
-      fileList = this.strategyCache[this.viewTypeId][folderPath];
+    let fileList;
+    const viewType = this.viewTypeService.getViewType();
+
+    if (this.strategyCache[viewType.id] && this.strategyCache[viewType.id][folderPath]) {
+      fileList = this.strategyCache[viewType.id][folderPath];
     }
     else {
-      this.lsStrategy.init(folderPath);
-      await this.buildList(folderPath);
-      fileList = this.lsStrategy.getResult();
+      viewType.strategy.init(folderPath);
+      await this.buildList(folderPath, viewType.strategy);
+      fileList = viewType.strategy.getResult();
 
       // Setting cache
-      if (!this.strategyCache[this.viewTypeId]) this.strategyCache[this.viewTypeId] = {};
-      this.strategyCache[this.viewTypeId][folderPath] = fileList;
+      if (!this.strategyCache[viewType.id]) this.strategyCache[viewType.id] = {};
+      this.strategyCache[viewType.id][folderPath] = fileList;
     }
 
     this.thumbnailService.setThumbnails(fileList);
-    this.onFileList.next(fileList);
+    this.onLs.next({ status: STATUS.LS_END, fileList: fileList });
   }
 
 }
