@@ -1,0 +1,44 @@
+<!doctype html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Image Viewer</title>
+    <base href="">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="logo.ico">
+    <link href="./assets/flexbin.css" type="text/css" rel="stylesheet" media="all" />
+  </head>
+
+  <body>
+    <style>
+      #loader-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        width: 100vw;
+        height: 100vh;
+      }
+
+      #loader-img {
+        width: 100px;
+        height: 100px;
+
+        margin-bottom: 10px;
+      }
+    </style>
+
+    <app-root>
+      <div id="loader-container">
+        <img id="loader-img" src="./assets/logo.svg" alt="Logo">
+      </div>
+    </app-root>
+  </body>
+</html>

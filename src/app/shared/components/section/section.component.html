@@ -1,0 +1,78 @@
+<p class="app-section__title">
+  <i [ngClass]="'fas ' + titleIcon"></i>
+  {{ type }}
+</p>
+
+<div
+  *ngIf="type === 'files'"
+  class="app-section__files"
+>
+    <p *ngFor="let item of items">{{ item.name }}</p>
+  </div>
+  
+<div
+  *ngIf="type === 'folders'"
+  class="app-section__folders row"
+>
+  <div
+    *ngFor="let item of items"
+    class="app-section__folders__folder col-2 col-xl-1"
+    (click)="cd(item.path)"
+  >
+    <i class="fas fa-folder"></i>
+    <p>{{ item.name }}</p>
+  </div>
+</div>
+
+<div
+  *ngIf="type === 'videos'"
+  class="app-section__videos row"
+>
+  <div
+    *ngFor="let item of items; let i = index"
+    class="app-section__videos__video col-6 col-xl-4"
+  >
+    <video [src]="'file://' + item.path" controls disablePictureInPicture></video>
+    <p>{{ item.name }}</p>
+  </div>
+</div>
+
+<div
+  *ngIf="type === 'images'"
+  class="app-section__images flexbin"
+>
+  <div
+    *ngFor="let item of items; let i = index"
+    (click)="openFullscreen(i)"
+    class="app-section__images__image"
+  >
+    <img [src]="'file://' + item.path" [alt]="item.name">
+    <div class="app-section__images__image__info">
+      <p class="app-section__images__image__info__name">{{ item.name }}</p>
+      <p class="app-section__images__image__info__date">{{ item.date | date:'medium' }}</p>
+    </div>
+  </div>
+</div>
+
+<div
+  *ngIf="fullscreen !== undefined"
+  class="app-section__fullscreen"
+>
+  <i
+    (click)="fullscreenPrevious()"
+    [ngClass]="{ disabled: fullscreen === 0 }"
+    class="fas fa-caret-left"
+  ></i>
+  <div class="app-section__fullscreen__container">
+    <img
+      [src]="'file://' + items[fullscreen].path"
+      [alt]="items[fullscreen].name"
+      (click)="closeFullscreen()"
+    >
+  </div>
+  <i
+    (click)="fullscreenNext()"
+    [ngClass]="{ disabled: fullscreen === items.length - 1 }"
+    class="fas fa-caret-right"
+  ></i>
+</div>

@@ -1,0 +1,38 @@
+<aside>
+  <img src="./assets/logo.svg" alt="Image Viewer">
+  <i
+    *ngFor="let item of MENU"
+    [ngClass]="item.class + (viewType === item.type ? ' selected' : '')"
+    (click)="viewType = item.type"
+  ></i>
+</aside>
+
+<section [ngClass]="rootFolder ? 'folder' : 'no-folder'">
+  <header>
+    <button
+      *ngIf="!rootFolder"
+      (click)="selectRootFolder()"
+    >
+      Select a folder
+    </button>
+
+    <ng-container *ngIf="rootFolder">
+      <h2>
+        <ng-container *ngFor="let folder of folders; trackBy: let i = index">
+          <span
+            *ngIf="i > 0"
+            class="separator"
+          >
+            &nbsp;>&nbsp;
+          </span>
+          <span (click)="cd(i)">{{ folder }}</span>
+        </ng-container>
+      </h2>
+      <button (click)="selectRootFolder()">Change</button>
+    </ng-container>
+  </header>
+
+  <article>
+    <app-files [viewType]="viewType"></app-files>
+  </article>
+</section>

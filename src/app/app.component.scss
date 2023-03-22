@@ -1,0 +1,103 @@
+:host {
+  display: flex;
+
+  &, aside, section {
+    height: 100%;
+  }
+
+  aside {
+    $size: 60px;
+
+    display: flex;
+    flex-direction: column;
+
+    width: $size;
+
+    border-right: 1px solid #E1E1E1;
+    background-color: #F6F6F6;
+
+    img, i {
+      width: $size;
+      height: $size;
+
+      padding: 10px;
+    }
+
+    i {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      font-size: 30px;
+      color: #4B4B4B;
+
+      &.selected {
+        color: white;
+        background-color: #CECECE;
+      }
+    }
+  }
+
+  section {
+    flex: 1;
+  }
+
+  .no-folder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .folder {
+    $gutter: 15px;
+
+    display: flex;
+    flex-direction: column;
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+
+      display: flex;
+      align-items: center;
+
+      padding-top: $gutter;
+      margin: 0 $gutter;
+
+      background-color: white;
+
+      h2 {
+        margin-right: 5px;
+
+        span {
+          display: inline-flex;
+          align-items: center;
+
+          &:not(.separator):not(:last-child) {
+            cursor: pointer;
+          }
+
+          &.separator {
+            font-size: 14px;
+            color: #969696;
+            font-weight: normal;
+          }
+        }
+      }
+
+      button {
+        height: 0%;
+      }
+    }
+
+    article {
+      flex: 1;
+
+      padding: $gutter;
+      padding-top: 0;
+
+      overflow: auto;
+    }
+  }
+}

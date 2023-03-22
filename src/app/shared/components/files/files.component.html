@@ -1,0 +1,14 @@
+<div>
+  <div *ngFor="let type of files | ngForObject">
+    <input type="checkbox" [id]="type" [name]="type" [(ngModel)]="showSection[type]">
+    <label [for]="type">{{ type }}</label>
+  </div>
+</div>
+
+<ng-container *ngFor="let type of files | ngForObject">
+  <app-section
+    *ngIf="files[type].length && showSection[type]"
+    [type]="type"
+    [items]="files[type]"
+  ></app-section>
+</ng-container>
