@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"noImplicitAny": true,
+		"outDir": ".electron",
+		"baseUrl": ".",
+		"paths": {
+			"*": ["node_modules/*"]
+		}
+	},
+	"include": ["./src/electron/*"]
+	// https://github.com/electron/electron-quick-start-typescript
+}

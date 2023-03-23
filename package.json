@@ -1,0 +1,40 @@
+{
+	"name": "gallery",
+	"version": "0.0.1",
+	"license": "CC-BY-SA-4.0",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/tseignette/gallery.git"
+	},
+	"scripts": {
+		"dev": "concurrently npm:*:dev -k",
+		"electron:build": "tsc -p tsconfig.electron.json",
+		"electron:rename": "for i in .electron/*.js; do mv $i ${i/js/cjs}; done",
+		"electron:dev": "npm run electron:build && npm run electron:rename && electron .electron/main.cjs",
+		"svelte:dev": "vite dev"
+	},
+	"devDependencies": {
+		"@skeletonlabs/skeleton": "^1.0.0",
+		"@sveltejs/kit": "^1.5.0",
+		"@typescript-eslint/eslint-plugin": "^5.45.0",
+		"@typescript-eslint/parser": "^5.45.0",
+		"autoprefixer": "^10.4.7",
+		"concurrently": "^7.6.0",
+		"electron": "^23.1.4",
+		"eslint": "^8.28.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-plugin-svelte3": "^4.0.0",
+		"postcss": "^8.4.14",
+		"postcss-load-config": "^4.0.1",
+		"prettier": "^2.8.0",
+		"prettier-plugin-svelte": "^2.8.1",
+		"svelte": "^3.54.0",
+		"svelte-check": "^3.0.1",
+		"svelte-preprocess": "^4.10.7",
+		"tailwindcss": "^3.1.5",
+		"tslib": "^2.4.1",
+		"typescript": "^4.9.3",
+		"vite": "^4.0.0"
+	},
+	"type": "module"
+}
